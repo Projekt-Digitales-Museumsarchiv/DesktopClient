@@ -3,7 +3,7 @@ package de.sfnbg.archivdesktopclient;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class HelloController {
+public class DesktopController {
     @FXML
     private Label welcomeText;
 
