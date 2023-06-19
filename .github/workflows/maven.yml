@@ -20,15 +20,18 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 17
+    - name: Sourcen holen
+      uses: actions/checkout@v3
+    - name: JDK 17 bereitstellen
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'microsoft'
         cache: maven
-    - name: Build with Maven
+    - name: Jar erzeugen
       run: mvn -B package --file pom.xml
+    - name: Run Image erzeugen
+      run: mvn -B jafafx:jlink --file pom.xml
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     #- name: Update dependency graph
