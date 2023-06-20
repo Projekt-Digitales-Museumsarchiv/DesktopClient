@@ -55,7 +55,7 @@ jobs:
         run: mvn -B package --file pom.xml
       - name: Run Image erzeugen
         run: mvn -B javafx:jlink --file pom.xml
-      - name: Installer für Windows erzeugen
+      - name: Paket für Linux erzeugen
         run: mvn -B jpackage:jpackage --file pom.xml
       - name: Publish setup artifact
         uses: actions/upload-artifact@v2
