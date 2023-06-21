@@ -29,6 +29,10 @@ jobs:
           java-version: '17'
           distribution: 'microsoft'
           cache: maven
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.8.6
       - name: Jar erzeugen
         run: mvn -B package --file pom.xml
       - name: Run Image erzeugen
