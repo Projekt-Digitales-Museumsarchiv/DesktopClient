@@ -17,6 +17,9 @@ on:
 jobs:
   build-windows:
     runs-on: [ self-hosted,windows ]
+    permissions:
+      contents: write
+      checks: write
     steps:
       - name: Sourcen holen
         uses: actions/checkout@v3
