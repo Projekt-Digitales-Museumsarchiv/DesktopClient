@@ -6,7 +6,7 @@
 
     <groupId>de.sfnbg</groupId>
     <artifactId>archivdesktopclient</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <name>ArchivDesktopClient</name>
 
     <properties>
@@ -60,11 +60,11 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.HelloApplication
+                            <mainClass>de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
                             </mainClass>
-                            <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
+                            <launcher>ArchivDesktopClient</launcher>
+                            <jlinkZipName>ArchivDesktopClient</jlinkZipName>
+                            <jlinkImageName>ArchivDesktopClient</jlinkImageName>
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
@@ -72,6 +72,121 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.github.akman</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>jpackage-image</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>jpackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.7</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>**/generated-sources/*</exclude>
+                    </excludes>
+                </configuration>
+
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.github.akman</groupId>
+                            <artifactId>jpackage-maven-plugin</artifactId>
+                            <version>0.1.5</version>
+                            <configuration>
+                                <name>ArchivDesktopClient</name>
+                                <type>MSI</type>
+                                <runtimeimage>${project.build.directory}/ArchivDesktopClient</runtimeimage>
+                                <appversion>0.0.1</appversion>
+                                <copyright>2023 Freunde der Nürnberg-Fürther Straßenbahn e.V.</copyright>
+                                <description>Desktop Client für Archivsystem</description>
+                                <vendor>Hemmeter</vendor>
+                                <winmenu>true</winmenu>
+                                <winshortcut>true</winshortcut>
+                                <winmenugroup>Hemmeter</winmenugroup>
+                                <module>
+                                    de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
+                                </module>
+                                <mainclass>de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication</mainclass>
+                            </configuration>
+
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>unix</id>
+            <activation>
+                <os>
+                    <family>Unix</family>
+                </os>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.github.akman</groupId>
+                            <artifactId>jpackage-maven-plugin</artifactId>
+                            <version>0.1.5</version>
+                            <configuration>
+                                <name>ArchivDesktopClient</name>
+                                <runtimeimage>${project.build.directory}/ArchivDesktopClient</runtimeimage>
+                                <appversion>0.0.1</appversion>
+                                <copyright>2023 Freunde der Nürnberg-Fürther Straßenbahn e.V.</copyright>
+                                <description>Desktop Client für Archivsystem</description>
+                                <vendor>Hemmeter</vendor>
+                                <module>
+                                    de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
+                                </module>
+                                <mainclass>de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication</mainclass>
+                            </configuration>
+
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
