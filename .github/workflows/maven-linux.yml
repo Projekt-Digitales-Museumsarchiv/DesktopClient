@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build Desktop Client with Maven for Linux
+name: Linux-Build
 
 on:
   push:

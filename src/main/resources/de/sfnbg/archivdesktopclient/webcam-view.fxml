@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="frmWebcam" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.sfnbg.archivdesktopclient.WebcamController">
+    <top>
+        <ComboBox fx:id="cameras" minWidth="100" maxWidth="Infinity"/>
+    </top>
+    <center>
+        <Canvas fx:id="mycanvas" height="327.0" width="312.0" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+
+    </center>
+    <bottom>
+        <HBox>
+            <Button fx:id="startButton" onMouseClicked="#bnStartClicked" text="Start" minWidth="100"
+                    maxWidth="Infinity"/>
+            <Button fx:id="stopButton" onMouseClicked="#bnStopClicked" text="Stop" minWidth="100" maxWidth="Infinity"/>
+        </HBox>
+    </bottom>
+</BorderPane>
