@@ -10,7 +10,7 @@
         <ComboBox minWidth="100" maxWidth="Infinity"/>
     </top>
     <center>
-        <Canvas fx:id="mycanvas" height="327.0" width="312.0" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+        <Canvas fx:id="mycanvas" height="400" width="400" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
 
     </center>
     <bottom>
