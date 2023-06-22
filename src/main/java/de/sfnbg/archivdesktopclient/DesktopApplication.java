@@ -10,9 +10,9 @@ import java.io.IOException;
 public class DesktopApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(DesktopApplication.class.getResource("webcam-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(DesktopApplication.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 420, 900);
-        stage.setTitle("Es nervt!");
+        stage.setTitle("Archiv Desktop-Client");
         stage.setScene(scene);
         stage.show();
     }
