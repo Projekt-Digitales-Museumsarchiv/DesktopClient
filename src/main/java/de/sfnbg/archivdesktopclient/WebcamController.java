@@ -73,6 +73,7 @@ public class WebcamController implements Initializable {
     }
 
     public void bnFertigClicked() {
+        this.videoprocessor.interrupt();
         WritableImage writableImage=new WritableImage((int) mycanvas.getWidth(), (int) mycanvas.getHeight());
         mycanvas.snapshot(null,writableImage);
         DesktopController.writableImage=writableImage;

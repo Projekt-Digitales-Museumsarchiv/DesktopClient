@@ -17,5 +17,6 @@
     <Canvas fx:id="inputCanvas" height="327.0" width="312.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="3" GridPane.columnSpan="3"/>
     <Button GridPane.columnIndex="1" GridPane.rowIndex="5" onAction="#onBnWebCamClick" text="Aufnehmen"/>
     <Button GridPane.columnIndex="2" GridPane.rowIndex="5" onAction="#onBnScannerClick" text="Scannen"/>
-    <Button GridPane.columnIndex="3" GridPane.rowIndex="5" onAction="#onBnUploadClick" text="Datei"/>
+    <Button GridPane.columnIndex="3" GridPane.rowIndex="5" onAction="#onBnUploadClick" text="Datei öffnen"/>
+    <Button GridPane.columnIndex="4" GridPane.rowIndex="5" onAction="#onBnUploadClick" text="Datei speichern"/>
 </GridPane>
