@@ -7,8 +7,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
 
+import javafx.scene.image.WritableImage;
+import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.bytedeco.javacv.*;
 
@@ -20,13 +21,13 @@ import java.util.ResourceBundle;
 public class WebcamController implements Initializable {
 
     public Thread videoprocessor;
+    @FXML
     public Button startButton;
 
     @FXML
     Canvas mycanvas;
 
-    @FXML
-    BorderPane frmWebcam;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -69,5 +70,15 @@ public class WebcamController implements Initializable {
     }
     public void bnStopClicked() {
         this.videoprocessor.interrupt();
+    }
+
+    public void bnFertigClicked() {
+        WritableImage writableImage=new WritableImage((int) mycanvas.getWidth(), (int) mycanvas.getHeight());
+        mycanvas.snapshot(null,writableImage);
+        DesktopController.writableImage=writableImage;
+        Stage stage = (Stage) mycanvas.getScene().getWindow();
+        stage.close();
+
+
     }
 }
