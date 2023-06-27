@@ -7,21 +7,28 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.layout.RowConstraints?>
-<GridPane alignment="CENTER" xmlns:fx="http://javafx.com/fxml"
-          fx:controller="de.sfnbg.archivdesktopclient.DesktopController">
+<?import javafx.scene.layout.ColumnConstraints?>
+<GridPane xmlns:fx="http://javafx.com/fxml"
+          fx:controller="de.sfnbg.archivdesktopclient.DesktopController" prefWidth="Infinity" prefHeight="Infinity" >
 
-    <Label GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.rowSpan="1" GridPane.columnSpan="4" text="Gelesenes Bild"/>
-    <Canvas fx:id="inputCanvas" height="400.0" width="400" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="4" GridPane.columnSpan="4"/>
-    <Button minWidth="100" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="6" onAction="#onBnWebCamClick" text="Aufnehmen"/>
-    <Button minWidth="100" maxWidth="Infinity" GridPane.columnIndex="2" GridPane.rowIndex="6" onAction="#onBnScannerClick" text="Scannen"/>
-    <Button minWidth="100" maxWidth="Infinity" GridPane.columnIndex="3" GridPane.rowIndex="6" onAction="#onBnUploadClick" text="Datei öffnen"/>
-    <Button minWidth="100" maxWidth="Infinity" GridPane.columnIndex="4" GridPane.rowIndex="6" onAction="#onBnUploadClick" text="Datei speichern"/>
+    <Label GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="4" text="Gelesenes Bild" />
+    <Canvas fx:id="inputCanvas" height="400" width="400" GridPane.rowIndex="1" GridPane.rowSpan="4" GridPane.columnSpan="4"/>
+    <Button minWidth="100" maxWidth="Infinity" GridPane.columnIndex="0" GridPane.rowIndex="5" onAction="#onBnWebCamClick" text="Aufnehmen"/>
+    <Button minWidth="100" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="5" onAction="#onBnScannerClick" text="Scannen"/>
+    <Button minWidth="100" maxWidth="Infinity" GridPane.columnIndex="2" GridPane.rowIndex="5" onAction="#onBnUploadClick" text="Datei öffnen"/>
+    <Button minWidth="100" maxWidth="Infinity" GridPane.columnIndex="3" GridPane.rowIndex="5" onAction="#onBnUploadClick" text="Datei speichern"/>
     <rowConstraints>
+        <RowConstraints minHeight="20" prefHeight="20" valignment="CENTER"/>
         <RowConstraints minHeight="100" prefHeight="100"/>
         <RowConstraints minHeight="100" prefHeight="100"/>
         <RowConstraints minHeight="100" prefHeight="100"/>
         <RowConstraints minHeight="100" prefHeight="100"/>
-        <RowConstraints minHeight="100" prefHeight="100"/>
-        <RowConstraints minHeight="100" prefHeight="100"/>
+        <RowConstraints minHeight="20" prefHeight="30"/>
     </rowConstraints>
+    <columnConstraints>
+        <ColumnConstraints minWidth="100" />
+        <ColumnConstraints minWidth="100" />
+        <ColumnConstraints minWidth="100" />
+        <ColumnConstraints minWidth="100" />
+    </columnConstraints>
 </GridPane>
