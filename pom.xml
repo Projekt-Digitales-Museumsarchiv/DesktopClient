@@ -68,8 +68,7 @@
             <artifactId>opencv-platform-gpu</artifactId>
             <version>4.7.0-1.5.9</version>
         </dependency>
-
-        <!-- Optional GPL builds with (almost) everything enabled -->
+         <!-- Optional GPL builds with (almost) everything enabled -->
         <dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>ffmpeg-platform-gpl</artifactId>
