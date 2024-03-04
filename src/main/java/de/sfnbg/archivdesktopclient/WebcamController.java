@@ -28,58 +28,52 @@ public class WebcamController implements Initializable {
     Canvas mycanvas;
 
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 
 
     public void bnStartClicked() throws FrameGrabber.Exception {
-        //Handler für Schliessen nachträglich eingefügt, sonst wirds zu umständlich
-        startButton.getScene().getWindow().setOnCloseRequest(e -> this.onCloseRequest());
-        OpenCVFrameGrabber capture= OpenCVFrameGrabber.createDefault(0);
-        capture.start();
+        try {
+            OpenCVFrameGrabber capture = OpenCVFrameGrabber.createDefault(0);
+            capture.start();
 
-        Java2DFrameConverter javaConverter = new Java2DFrameConverter();
+            Java2DFrameConverter javaConverter = new Java2DFrameConverter();
 
-        this.videoprocessor = new Thread(() -> {
-            try {
-                while (!Thread.currentThread().isInterrupted()) {
-                    Frame frame = capture.grab();
-                    Platform.runLater(() -> {
-                        BufferedImage image = javaConverter.getBufferedImage(frame, 1.0, false, null);
-                        mycanvas.getGraphicsContext2D().drawImage(SwingFXUtils.toFXImage(image, null), 0, 0);
-                    });
+            this.videoprocessor = new Thread(() -> {
+                try {
+                    while (!Thread.currentThread().isInterrupted()) {
+                        Frame frame = capture.grab();
+                        Platform.runLater(() -> {
+                            BufferedImage image = javaConverter.getBufferedImage(frame, 1.0, false, null);
+                            mycanvas.getGraphicsContext2D().drawImage(SwingFXUtils.toFXImage(image, null), 0, 0);
+                        });
+                    }
+                    capture.release();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                capture.release();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+            });
 
+            this.videoprocessor.start();
 
-
-        this.videoprocessor.start();
-
+        } catch (FrameGrabber.Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Keine Kamera vorhanden");
+            alert.show();
+            e.printStackTrace();
+        }
     }
 
-    public void onCloseRequest() {
-        Alert alert=new Alert(Alert.AlertType.INFORMATION);
-        alert.show();
-        this.videoprocessor.interrupt();
-    }
     public void bnStopClicked() {
         this.videoprocessor.interrupt();
     }
 
     public void bnFertigClicked() {
         this.videoprocessor.interrupt();
-        WritableImage writableImage=new WritableImage((int) mycanvas.getWidth(), (int) mycanvas.getHeight());
-        mycanvas.snapshot(null,writableImage);
-        DesktopController.writableImage=writableImage;
+        WritableImage writableImage = new WritableImage((int) mycanvas.getWidth(), (int) mycanvas.getHeight());
+        mycanvas.snapshot(null, writableImage);
+        DesktopController.writableImage = writableImage;
         Stage stage = (Stage) mycanvas.getScene().getWindow();
         stage.close();
-
-
     }
 }
