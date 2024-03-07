@@ -10,14 +10,12 @@ import javafx.scene.control.Button;
 
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
-import lombok.extern.slf4j.Slf4j;
 import org.bytedeco.javacv.*;
 
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@Slf4j
 public class WebcamController implements Initializable {
 
     public Thread videoprocessor;
@@ -33,7 +31,7 @@ public class WebcamController implements Initializable {
     }
 
 
-    public void bnStartClicked() throws FrameGrabber.Exception {
+    public void bnStartClicked() {
         try {
             OpenCVFrameGrabber capture = OpenCVFrameGrabber.createDefault(0);
             capture.start();

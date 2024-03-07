@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="Infinity" prefWidth="Infinity" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.sfnbg.archivdesktopclient.WebcamController">
+<BorderPane prefHeight="Infinity" prefWidth="Infinity" xmlns="http://javafx.com/javafx/17.0.10" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.sfnbg.archivdesktopclient.WebcamController">
     <top>
         <ComboBox maxWidth="Infinity" minWidth="100" />
     </top>

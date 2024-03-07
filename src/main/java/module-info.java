@@ -13,7 +13,7 @@ module de.sfnbg.archivdesktopclient {
 
     requires org.bytedeco.javacv.platform;
     requires lombok;
-
+    requires atlantafx.base;
 
     opens de.sfnbg.archivdesktopclient to javafx.fxml;
     exports de.sfnbg.archivdesktopclient;
