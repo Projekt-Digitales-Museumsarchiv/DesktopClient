@@ -11,5 +11,4 @@ class DesktopControllerTest {
         Assertions.assertEquals(1,i);
 
     }
-  
 }

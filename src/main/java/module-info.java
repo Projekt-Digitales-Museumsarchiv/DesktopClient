@@ -1,6 +1,6 @@
 module de.sfnbg.archivdesktopclient {
     requires javafx.controls;
-    requires javafx.fxml;
+    //requires javafx.fxml;
     requires javafx.swing;
     requires org.bytedeco.javacv;
     requires org.bytedeco.opencv;
@@ -14,7 +14,10 @@ module de.sfnbg.archivdesktopclient {
     requires org.bytedeco.javacv.platform;
     requires lombok;
     requires atlantafx.base;
-
-    opens de.sfnbg.archivdesktopclient to javafx.fxml;
+    requires org.kordamp.ikonli.feather;
+    requires org.kordamp.ikonli.core;
+    requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.ikonli.material2;
+    //opens de.sfnbg.archivdesktopclient to javafx.fxml;
     exports de.sfnbg.archivdesktopclient;
 }
