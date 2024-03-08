@@ -5,7 +5,9 @@ import atlantafx.base.theme.Styles;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.ToolBar;
+import org.kordamp.ikonli.feather.Feather;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class LookupCard extends Card {
 
@@ -21,16 +23,16 @@ public class LookupCard extends Card {
         TableView tableView = new TableView();
         this.setBody(tableView);
 
-        Button bnSearchIsbn = new Button("ISBN");
-        bnSearchIsbn.setMinWidth(100);
+        Button bnSearchIsbn = new Button("ISBN", new FontIcon(Feather.SEARCH));
+        bnSearchIsbn.setMinWidth(50);
 
-        Button bnSearchFulltext = new Button("Volltext");
-        bnSearchFulltext.setMinWidth(100);
+        Button bnSearchFulltext = new Button("Volltext", new FontIcon(Feather.SEARCH));
+        bnSearchFulltext.setMinWidth(50);
 
-        Button bnApply = new Button("Übernehmen");
-        bnApply.setMinWidth(100);
+        Button bnApply = new Button("Übernehmen", new FontIcon(Feather.CHECK));
+        bnApply.setMinWidth(50);
 
-        HBox footer = new HBox(bnSearchIsbn, bnSearchFulltext, bnApply);
+        ToolBar footer = new ToolBar(bnSearchIsbn, bnSearchFulltext, bnApply);
 
         this.setFooter(footer);
     }

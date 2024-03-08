@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -16,8 +17,10 @@ import org.kordamp.ikonli.javafx.FontIcon;
 public class ImportCard extends Card {
     public static WritableImage writableImage;
     Canvas canvas;
+    static final Integer BUTTON_MIN_WIDTH = 50;
 
     public ImportCard() {
+
 
         var title = new Label("Bild importieren");
         title.getStyleClass().add((Styles.TITLE_3));
@@ -36,17 +39,22 @@ public class ImportCard extends Card {
         Button bnWebCam = new Button("Webcam", new FontIcon(Feather.CAMERA));
         bnWebCam.setMinWidth(100);
         bnWebCam.setOnAction(e -> bnWebCamClicked());
+        bnWebCam.setMinWidth(BUTTON_MIN_WIDTH);
+
 
         Button bnScan = new Button("Scan", new FontIcon(Feather.PAPERCLIP));
         bnScan.setMinWidth(100);
+        bnScan.setMinWidth(BUTTON_MIN_WIDTH);
 
         Button bnLoad = new Button("Datei", new FontIcon(Feather.FILE));
         bnLoad.setMinWidth(100);
+        bnLoad.setMinWidth(BUTTON_MIN_WIDTH);
 
         Button bnSave = new Button("Speichern", new FontIcon(Feather.SAVE));
         bnSave.setMinWidth(100);
+        bnSave.setMinWidth(BUTTON_MIN_WIDTH);
 
-        HBox footer = new HBox(bnWebCam, bnScan, bnLoad, bnSave);
+        ToolBar footer = new ToolBar(bnWebCam, bnScan, bnLoad, bnSave);
 
         this.setFooter(footer);
     }
@@ -62,6 +70,5 @@ public class ImportCard extends Card {
         if (writableImage != null) {
             canvas.getGraphicsContext2D().drawImage(writableImage, 0, 0);
         }
-        System.out.println("Klick Klick!");
     }
 }
