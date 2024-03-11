@@ -58,6 +58,11 @@
             <version>17.0.2</version>
         </dependency>
         <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>17.0.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>javacv-platform</artifactId>
             <version>1.5.9</version>
@@ -119,6 +124,7 @@
             <artifactId>datafaker</artifactId>
             <version>${lib.datafaker.version}</version>
         </dependency>
+
     </dependencies>
     <build>
         <plugins>

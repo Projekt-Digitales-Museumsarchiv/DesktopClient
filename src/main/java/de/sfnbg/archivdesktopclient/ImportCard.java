@@ -2,6 +2,7 @@ package de.sfnbg.archivdesktopclient;
 
 import atlantafx.base.controls.Card;
 import atlantafx.base.theme.Styles;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,9 +23,13 @@ import javafx.stage.Stage;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import java.awt.image.*;
 
 
 public class ImportCard extends Card {
@@ -71,24 +76,61 @@ public class ImportCard extends Card {
         Button bnLoad = new Button("Datei", new FontIcon(Feather.FILE));
         bnLoad.setMinWidth(100);
         bnLoad.setMinWidth(BUTTON_MIN_WIDTH);
-        bnLoad.setOnAction(e->bnLoadClicked());
+        bnLoad.setOnAction(e -> bnLoadClicked());
 
         Button bnSave = new Button("Speichern", new FontIcon(Feather.SAVE));
         bnSave.setMinWidth(100);
         bnSave.setMinWidth(BUTTON_MIN_WIDTH);
+        bnSave.setOnAction(e -> bnSaveClicked());
 
         ToolBar footer = new ToolBar(bnWebCam, bnScan, bnLoad, bnSave);
 
         this.setFooter(footer);
     }
 
+    private void bnSaveClicked() {
+        if (imageView.getImage() != null) {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("PNG Dateien", "*.png")
+                    , new FileChooser.ExtensionFilter("JPG Dateien", "*.jpg")
+            );
+
+            File selectedFile = fileChooser.showSaveDialog(getScene().getWindow());
+            if (selectedFile != null) {
+                String fileName = selectedFile.getName();
+                String extension = fileName.substring(fileName.lastIndexOf(".")+1);
+                System.out.println(extension);
+                System.out.println(selectedFile.getName());
+                System.out.println(selectedFile.getPath());
+                BufferedImage img= SwingFXUtils.fromFXImage(imageView.getImage(),null);
+                BufferedImage awtImage = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
+
+                try {
+                    ImageIO.write(SwingFXUtils.fromFXImage(imageView.snapshot(null, null),
+                            awtImage), extension, selectedFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }
+    }
+
     private void bnLoadClicked() {
-        FileChooser fileChooser=new FileChooser();
-        File selectedFile=fileChooser.showOpenDialog(getScene().getWindow());
-        try {
-            imageView.setImage(new Image(new FileInputStream(selectedFile)));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("PNG Dateien", "*.png")
+                , new FileChooser.ExtensionFilter("JPG Dateien", "*.jpg")
+        );
+        File selectedFile = fileChooser.showOpenDialog(getScene().getWindow());
+        if (selectedFile != null) {
+            try {
+                imageView.setImage(new Image(new FileInputStream(selectedFile)));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
