@@ -3,7 +3,6 @@ package de.sfnbg.archivdesktopclient;
 import atlantafx.base.controls.Card;
 import atlantafx.base.theme.Styles;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
@@ -18,23 +17,22 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 
 public class ImportCard extends Card {
     public static WritableImage writableImage;
-    Canvas canvas;
     ImageView imageView;
     static final Integer BUTTON_MIN_WIDTH = 50;
 
-
     public ImportCard() {
-
 
         var title = new Label("Bild importieren");
         title.getStyleClass().add((Styles.TITLE_3));
@@ -73,6 +71,7 @@ public class ImportCard extends Card {
         Button bnLoad = new Button("Datei", new FontIcon(Feather.FILE));
         bnLoad.setMinWidth(100);
         bnLoad.setMinWidth(BUTTON_MIN_WIDTH);
+        bnLoad.setOnAction(e->bnLoadClicked());
 
         Button bnSave = new Button("Speichern", new FontIcon(Feather.SAVE));
         bnSave.setMinWidth(100);
@@ -81,6 +80,16 @@ public class ImportCard extends Card {
         ToolBar footer = new ToolBar(bnWebCam, bnScan, bnLoad, bnSave);
 
         this.setFooter(footer);
+    }
+
+    private void bnLoadClicked() {
+        FileChooser fileChooser=new FileChooser();
+        File selectedFile=fileChooser.showOpenDialog(getScene().getWindow());
+        try {
+            imageView.setImage(new Image(new FileInputStream(selectedFile)));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void DragOver(DragEvent event) {
@@ -110,8 +119,7 @@ public class ImportCard extends Card {
         stage.setScene(scene);
         stage.showAndWait();
         writableImage = webcamWindow.getWritableImage();
-        if (writableImage != null) {
-            canvas.getGraphicsContext2D().drawImage(writableImage, 0, 0);
-        }
+        if (writableImage != null)
+            imageView.setImage(writableImage);
     }
 }
