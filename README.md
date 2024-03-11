@@ -2,7 +2,6 @@
 
 ![linux_build](https://github.com/Projekt-Digitales-Museumsarchiv/DesktopClient/actions/workflows/maven-linux.yml/badge.svg?event=push)
 ![windows_build](https://github.com/Projekt-Digitales-Museumsarchiv/DesktopClient/actions/workflows/maven-windows.yml/badge.svg?event=push)
-![coverage](.github/badges/jacoco.svg)
 
 Der Desktopclient dient zum Erfassung von Büchern anhand einer ISBN
 
@@ -14,17 +13,18 @@ Folgender Workflow ist angedacht:
 
 Die Bilderfassung soll auf folgenden Wegen möglich sein:
 
-- Drag und Drop aus dem Explorer
-- Laden einer Datei (mit File Open Dialog)
-- Scannen eines Bildes (Command Line Tool NN)
-- Fotografieren mit der Webcam (mittels JavaCV)
+- [x] Drag und Drop aus dem Explorer 
+- {x] Laden einer Datei (mit File Open Dialog)
+- [ ] Scannen eines Bildes (Command Line Tool NN)
+- [ ] Fotografieren mit der Webcam (mittels JavaCV)
+- [x] Exportieren eines Bildes in eine Datei (PNG/JPG)
 
 ### Schritt 2: ISBN aus Bild extrahieren
 
 Das vom Barcode oder einer Buchseite aufgenommene Bild soll nun nach einer ISBN durchsucht werden.
 Das geschieht
-- bei Barcodes mit ZBar (wenn es keine Maven Dependency gibt mit CLI-Aufruf)
-- bei Fotos von Text (Apache Tika und Tesseract, danach Text beschneiden)
+- [ ] bei Barcodes mit ZBar (wenn es keine Maven Dependency gibt mit CLI-Aufruf)
+- [ ] bei Fotos von Text (Apache Tika und Tesseract, danach Text beschneiden)
 
 ### Schritt 3: Metadaten anhand ISBN ermitteln
 
