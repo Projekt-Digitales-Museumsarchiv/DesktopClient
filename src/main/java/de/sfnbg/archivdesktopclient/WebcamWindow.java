@@ -63,11 +63,9 @@ public class WebcamWindow {
     }
 
     private void bnStartClicked() {
-        try {
+        try (Java2DFrameConverter javaConverter = new Java2DFrameConverter()) {
             OpenCVFrameGrabber capture = OpenCVFrameGrabber.createDefault(0);
             capture.start();
-
-            Java2DFrameConverter javaConverter = new Java2DFrameConverter();
 
             this.videoProcessor = new Thread(() -> {
                 try {
@@ -80,7 +78,7 @@ public class WebcamWindow {
                     }
                     capture.release();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    System.out.println(e.getMessage());
                 }
             });
 
@@ -89,7 +87,7 @@ public class WebcamWindow {
         } catch (FrameGrabber.Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Keine Kamera vorhanden");
             alert.show();
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 

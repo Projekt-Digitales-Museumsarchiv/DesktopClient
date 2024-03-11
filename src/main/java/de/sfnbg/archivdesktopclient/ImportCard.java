@@ -24,12 +24,11 @@ import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import java.awt.image.*;
 
 
 public class ImportCard extends Card {
@@ -47,14 +46,13 @@ public class ImportCard extends Card {
         subtitle.getStyleClass().add((Styles.TEXT_SMALL));
         this.setSubHeader(subtitle);
 
-        //canvas = new Canvas(400, 500);
         imageView = new ImageView();
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(400);
         imageView.setFitHeight(400);
         imageView.setPickOnBounds(true);
-        imageView.setOnDragDropped(e -> this.Dropped(e));
-        imageView.setOnDragOver(e -> this.DragOver(e));
+        imageView.setOnDragDropped(this::Dropped);
+        imageView.setOnDragOver(this::DragOver);
 
         System.out.println("Handler is set");
 
@@ -63,6 +61,10 @@ public class ImportCard extends Card {
         pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, null)));
         this.setBody(pane);
 
+        this.setFooter(getToolBar());
+    }
+
+    private ToolBar getToolBar() {
         Button bnWebCam = new Button("Webcam", new FontIcon(Feather.CAMERA));
         bnWebCam.setMinWidth(100);
         bnWebCam.setOnAction(e -> bnWebCamClicked());
@@ -72,6 +74,7 @@ public class ImportCard extends Card {
         Button bnScan = new Button("Scan", new FontIcon(Feather.PAPERCLIP));
         bnScan.setMinWidth(100);
         bnScan.setMinWidth(BUTTON_MIN_WIDTH);
+        bnScan.setOnAction(e -> bnScanClicked());
 
         Button bnLoad = new Button("Datei", new FontIcon(Feather.FILE));
         bnLoad.setMinWidth(100);
@@ -83,34 +86,40 @@ public class ImportCard extends Card {
         bnSave.setMinWidth(BUTTON_MIN_WIDTH);
         bnSave.setOnAction(e -> bnSaveClicked());
 
-        ToolBar footer = new ToolBar(bnWebCam, bnScan, bnLoad, bnSave);
+        return new ToolBar(bnWebCam, bnScan, bnLoad, bnSave);
+    }
 
-        this.setFooter(footer);
+    private void bnScanClicked() {
+        ScanWindow scanWindow = new ScanWindow();
+        Scene scene = scanWindow.getScene();
+        Stage stage = new Stage();
+        stage.setTitle("Bild von Scanner holen");
+        stage.setScene(scene);
+        stage.showAndWait();
+        if (scanWindow.getImageView() != null)
+            if (scanWindow.getImageView().getImage() != null)
+                imageView.setImage(scanWindow.getImageView().getImage());
     }
 
     private void bnSaveClicked() {
         if (imageView.getImage() != null) {
             FileChooser fileChooser = new FileChooser();
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("PNG Dateien", "*.png")
-                    , new FileChooser.ExtensionFilter("JPG Dateien", "*.jpg")
-            );
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PNG Dateien", "*.png"), new FileChooser.ExtensionFilter("JPG Dateien", "*.jpg"));
 
             File selectedFile = fileChooser.showSaveDialog(getScene().getWindow());
             if (selectedFile != null) {
                 String fileName = selectedFile.getName();
-                String extension = fileName.substring(fileName.lastIndexOf(".")+1);
+                String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
                 System.out.println(extension);
                 System.out.println(selectedFile.getName());
                 System.out.println(selectedFile.getPath());
-                BufferedImage img= SwingFXUtils.fromFXImage(imageView.getImage(),null);
+                BufferedImage img = SwingFXUtils.fromFXImage(imageView.getImage(), null);
                 BufferedImage awtImage = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
 
                 try {
-                    ImageIO.write(SwingFXUtils.fromFXImage(imageView.snapshot(null, null),
-                            awtImage), extension, selectedFile);
+                    ImageIO.write(SwingFXUtils.fromFXImage(imageView.snapshot(null, null), awtImage), extension, selectedFile);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println(e.getMessage());
                 }
 
             }
@@ -120,10 +129,7 @@ public class ImportCard extends Card {
 
     private void bnLoadClicked() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("PNG Dateien", "*.png")
-                , new FileChooser.ExtensionFilter("JPG Dateien", "*.jpg")
-        );
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PNG Dateien", "*.png"), new FileChooser.ExtensionFilter("JPG Dateien", "*.jpg"));
         File selectedFile = fileChooser.showOpenDialog(getScene().getWindow());
         if (selectedFile != null) {
             try {
@@ -161,7 +167,6 @@ public class ImportCard extends Card {
         stage.setScene(scene);
         stage.showAndWait();
         writableImage = webcamWindow.getWritableImage();
-        if (writableImage != null)
-            imageView.setImage(writableImage);
+        if (writableImage != null) imageView.setImage(writableImage);
     }
 }
