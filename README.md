@@ -14,7 +14,7 @@ Folgender Workflow ist angedacht:
 Die Bilderfassung soll auf folgenden Wegen möglich sein:
 
 - [x] Drag und Drop aus dem Explorer 
-- {x] Laden einer Datei (mit File Open Dialog)
+- [x] Laden einer Datei (mit File Open Dialog)
 - [ ] Scannen eines Bildes (Command Line Tool NN)
 - [ ] Fotografieren mit der Webcam (mittels JavaCV)
 - [x] Exportieren eines Bildes in eine Datei (PNG/JPG)
