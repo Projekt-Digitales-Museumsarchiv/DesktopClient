@@ -12,6 +12,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.9.2</junit.version>
+        <lib.ikonli.version>12.3.1</lib.ikonli.version>
+        <lib.datafaker.version>2.1.0</lib.datafaker.version>
+        <lombok.version>1.18.26</lombok.version>
+        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
     </properties>
 
     <dependencies>
@@ -38,11 +42,11 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.openpnp</groupId>-->
-<!--            <artifactId>opencv</artifactId>-->
-<!--            <version>4.5.1-2</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.openpnp</groupId>-->
+        <!--            <artifactId>opencv</artifactId>-->
+        <!--            <version>4.5.1-2</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>javacv</artifactId>
@@ -51,6 +55,11 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-swing</artifactId>
+            <version>17.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
             <version>17.0.2</version>
         </dependency>
         <dependency>
@@ -68,7 +77,6 @@
             <artifactId>opencv-platform-gpu</artifactId>
             <version>4.7.0-1.5.9</version>
         </dependency>
-
         <!-- Optional GPL builds with (almost) everything enabled -->
         <dependency>
             <groupId>org.bytedeco</groupId>
@@ -91,9 +99,33 @@
             <artifactId>javacpp</artifactId>
             <version>1.5.9</version>
         </dependency>
+        <dependency>
+            <groupId>io.github.mkpaz</groupId>
+            <artifactId>atlantafx-base</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-javafx</artifactId>
+            <version>${lib.ikonli.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-feather-pack</artifactId>
+            <version>${lib.ikonli.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-material2-pack</artifactId>
+            <version>${lib.ikonli.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.datafaker</groupId>
+            <artifactId>datafaker</artifactId>
+            <version>${lib.datafaker.version}</version>
+        </dependency>
 
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -103,7 +135,25 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                        <dependency>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>0.2.0</version>
+                        </dependency>
+                    </annotationProcessorPaths>
                 </configuration>
+
             </plugin>
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -201,7 +251,9 @@
                                 <module>
                                     de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
                                 </module>
-                                <mainclass>de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication</mainclass>
+                                <mainclass>
+                                    de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
+                                </mainclass>
                             </configuration>
 
                         </plugin>
@@ -233,7 +285,9 @@
                                 <module>
                                     de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
                                 </module>
-                                <mainclass>de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication</mainclass>
+                                <mainclass>
+                                    de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
+                                </mainclass>
                             </configuration>
 
                         </plugin>

@@ -1,18 +1,18 @@
 package de.sfnbg.archivdesktopclient;
 
+import atlantafx.base.theme.NordLight;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 
 public class DesktopApplication extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(DesktopApplication.class.getResource("main-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 420, 900);
+    public void start(Stage stage) {
+        Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
+        MainWindow mainWindow=new MainWindow();
         stage.setTitle("Archiv Desktop-Client");
+        Scene scene=mainWindow.getScene();
         stage.setScene(scene);
         stage.show();
     }
