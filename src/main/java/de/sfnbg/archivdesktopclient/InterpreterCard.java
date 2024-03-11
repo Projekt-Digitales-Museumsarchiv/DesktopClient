@@ -8,6 +8,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.ToolBar;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.material2.Material2AL;
+import org.kordamp.ikonli.material2.Material2MZ;
 
 public class InterpreterCard extends Card {
     static final Integer BUTTON_MIN_WIDTH = 50;
@@ -26,13 +28,13 @@ public class InterpreterCard extends Card {
         ta.setMaxWidth(400);
         this.setBody(ta);
 
-        Button bnBarcode = new Button("Barcode",new FontIcon(Feather.LINK_2));
+        Button bnBarcode = new Button("Barcode",new FontIcon(Material2AL.BARCODE));
         bnBarcode.setMinWidth(BUTTON_MIN_WIDTH);
 
-        Button bnIsbn = new Button("ISBN",new FontIcon(Feather.SEARCH));
+        Button bnIsbn = new Button("ISBN",new FontIcon(Material2MZ.SHORT_TEXT));
         bnIsbn.setMinWidth(BUTTON_MIN_WIDTH);
 
-        Button bnFulltext = new Button("Volltext",new FontIcon(Feather.SEARCH));
+        Button bnFulltext = new Button("Volltext",new FontIcon(Material2MZ.TEXT_FIELDS));
         bnFulltext.setMinWidth(BUTTON_MIN_WIDTH);
 
         Button bnClipboard = new Button("Kopieren",new FontIcon(Feather.COPY));

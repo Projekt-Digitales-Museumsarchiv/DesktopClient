@@ -7,17 +7,31 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.*;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+
 public class ImportCard extends Card {
     public static WritableImage writableImage;
     Canvas canvas;
+    ImageView imageView;
     static final Integer BUTTON_MIN_WIDTH = 50;
+
 
     public ImportCard() {
 
@@ -30,9 +44,19 @@ public class ImportCard extends Card {
         subtitle.getStyleClass().add((Styles.TEXT_SMALL));
         this.setSubHeader(subtitle);
 
-        canvas = new Canvas(400, 500);
+        //canvas = new Canvas(400, 500);
+        imageView = new ImageView();
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(400);
+        imageView.setFitHeight(400);
+        imageView.setPickOnBounds(true);
+        imageView.setOnDragDropped(e -> this.Dropped(e));
+        imageView.setOnDragOver(e -> this.DragOver(e));
+
+        System.out.println("Handler is set");
+
         Pane pane = new Pane();
-        pane.getChildren().add(canvas);
+        pane.getChildren().add(imageView);
         pane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, null)));
         this.setBody(pane);
 
@@ -57,6 +81,25 @@ public class ImportCard extends Card {
         ToolBar footer = new ToolBar(bnWebCam, bnScan, bnLoad, bnSave);
 
         this.setFooter(footer);
+    }
+
+    private void DragOver(DragEvent event) {
+        Dragboard dragboard = event.getDragboard();
+        if (dragboard.hasImage() || dragboard.hasFiles()) {
+            event.acceptTransferModes(TransferMode.COPY);
+        }
+        event.consume();
+    }
+
+    private void Dropped(DragEvent event) {
+        Dragboard dragboard = event.getDragboard();
+        if (dragboard.hasFiles() || dragboard.hasImage()) {
+            try {
+                imageView.setImage(new Image(new FileInputStream(dragboard.getFiles().get(0))));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private void bnWebCamClicked() {
