@@ -16,7 +16,7 @@ on:
 
 jobs:
   build-linux:
-    runs-on: [ self-hosted,linux ]
+    runs-on: [ ubuntu-latest ]
     permissions:
       contents: write
       checks: write
