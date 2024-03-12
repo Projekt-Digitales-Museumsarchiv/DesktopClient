@@ -1,7 +1,8 @@
-package de.sfnbg.archivdesktopclient;
+package de.sfnbg.archivdesktopclient.ui;
 
 import atlantafx.base.controls.Card;
 import atlantafx.base.theme.Styles;
+import de.sfnbg.archivdesktopclient.data.MainRecord;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,7 +28,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
@@ -35,14 +35,17 @@ public class ImportCard extends Card {
     public static WritableImage writableImage;
     ImageView imageView;
     static final Integer BUTTON_MIN_WIDTH = 50;
+    static MainRecord mainRecord;
 
-    public ImportCard() {
+    public ImportCard(MainRecord mainRecord) {
+        super();
+        ImportCard.mainRecord = mainRecord;
 
-        var title = new Label("Bild importieren");
+        Label title = new Label("Bild importieren");
         title.getStyleClass().add((Styles.TITLE_3));
         this.setHeader(title);
 
-        var subtitle = new Label("Von der Webcam, vom Scanner oder aus einer Datei");
+        Label subtitle = new Label("Von der Webcam, vom Scanner oder aus einer Datei");
         subtitle.getStyleClass().add((Styles.TEXT_SMALL));
         this.setSubHeader(subtitle);
 
@@ -53,8 +56,6 @@ public class ImportCard extends Card {
         imageView.setPickOnBounds(true);
         imageView.setOnDragDropped(this::Dropped);
         imageView.setOnDragOver(this::DragOver);
-
-        System.out.println("Handler is set");
 
         Pane pane = new Pane();
         pane.getChildren().add(imageView);
@@ -90,7 +91,7 @@ public class ImportCard extends Card {
     }
 
     private void bnScanClicked() {
-        ScanWindow scanWindow = new ScanWindow();
+        ScanWindow scanWindow = new ScanWindow(mainRecord);
         Scene scene = scanWindow.getScene();
         Stage stage = new Stage();
         stage.setTitle("Bild von Scanner holen");
@@ -108,22 +109,26 @@ public class ImportCard extends Card {
 
             File selectedFile = fileChooser.showSaveDialog(getScene().getWindow());
             if (selectedFile != null) {
-                String fileName = selectedFile.getName();
-                String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-                System.out.println(extension);
-                System.out.println(selectedFile.getName());
-                System.out.println(selectedFile.getPath());
-                BufferedImage img = SwingFXUtils.fromFXImage(imageView.getImage(), null);
-                BufferedImage awtImage = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
-
-                try {
-                    ImageIO.write(SwingFXUtils.fromFXImage(imageView.snapshot(null, null), awtImage), extension, selectedFile);
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                }
+                saveFile(selectedFile);
 
             }
 
+        }
+    }
+
+    private void saveFile(File selectedFile) {
+        String fileName = selectedFile.getName();
+        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+        System.out.println(extension);
+        System.out.println(selectedFile.getName());
+        System.out.println(selectedFile.getPath());
+        BufferedImage img = SwingFXUtils.fromFXImage(imageView.getImage(), null);
+        BufferedImage awtImage = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
+
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(imageView.snapshot(null, null), awtImage), extension, selectedFile);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -134,7 +139,10 @@ public class ImportCard extends Card {
         if (selectedFile != null) {
             try {
                 imageView.setImage(new Image(new FileInputStream(selectedFile)));
-            } catch (FileNotFoundException e) {
+                File outFile = File.createTempFile("Import_", ".jpg");
+                System.out.println(outFile.getPath());
+                saveFile(outFile);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -153,20 +161,34 @@ public class ImportCard extends Card {
         if (dragboard.hasFiles() || dragboard.hasImage()) {
             try {
                 imageView.setImage(new Image(new FileInputStream(dragboard.getFiles().get(0))));
-            } catch (FileNotFoundException e) {
+                File outFile = File.createTempFile("Drop_", ".jpg");
+                System.out.println(outFile.getPath());
+                saveFile(outFile);
+
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
     private void bnWebCamClicked() {
-        WebcamWindow webcamWindow = new WebcamWindow();
+        WebcamWindow webcamWindow = new WebcamWindow(mainRecord);
         Scene scene = webcamWindow.getScene();
         Stage stage = new Stage();
         stage.setTitle("Bild von Webcam holen");
         stage.setScene(scene);
         stage.showAndWait();
         writableImage = webcamWindow.getWritableImage();
-        if (writableImage != null) imageView.setImage(writableImage);
+        if (writableImage != null) {
+            imageView.setImage(writableImage);
+            File outFile;
+            try {
+                outFile = File.createTempFile("Cam_", ".jpg");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println(outFile.getPath());
+            saveFile(outFile);
+        }
     }
 }

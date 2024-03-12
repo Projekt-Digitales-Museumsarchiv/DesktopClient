@@ -22,4 +22,6 @@ module de.sfnbg.archivdesktopclient {
     uses java.awt.image.BufferedImage;
     //opens de.sfnbg.archivdesktopclient to javafx.fxml;
     exports de.sfnbg.archivdesktopclient;
+    exports de.sfnbg.archivdesktopclient.ui;
+    exports de.sfnbg.archivdesktopclient.data;
 }

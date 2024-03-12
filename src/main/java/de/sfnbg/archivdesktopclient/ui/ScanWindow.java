@@ -1,6 +1,7 @@
-package de.sfnbg.archivdesktopclient;
+package de.sfnbg.archivdesktopclient.ui;
 
 import atlantafx.base.controls.Card;
+import de.sfnbg.archivdesktopclient.data.MainRecord;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -21,6 +22,7 @@ import java.io.IOException;
 
 @Getter
 public class ScanWindow {
+    static MainRecord mainRecord;
 
     static final Integer BUTTON_MIN_WIDTH = 20;
 
@@ -31,6 +33,11 @@ public class ScanWindow {
     private ComboBox<String> cmbColor;
     private ComboBox<String> cmbOutput;
     private CheckBox cbAdf;
+
+    public ScanWindow(MainRecord mainRecord) {
+        super();
+        ScanWindow.mainRecord = mainRecord;
+    }
 
     public Scene getScene() {
         try {
@@ -101,6 +108,7 @@ public class ScanWindow {
             if (outFile.exists()) {
                 try {
                     imageView.setImage(new Image(new FileInputStream(outFile)));
+                    mainRecord.getTransferRecord().setFileName(outFile.getPath());
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }

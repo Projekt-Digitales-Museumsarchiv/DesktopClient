@@ -1,6 +1,7 @@
-package de.sfnbg.archivdesktopclient;
+package de.sfnbg.archivdesktopclient.ui;
 
 import atlantafx.base.controls.Card;
+import de.sfnbg.archivdesktopclient.data.MainRecord;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
@@ -18,16 +19,26 @@ import org.bytedeco.javacv.OpenCVFrameGrabber;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class WebcamWindow {
     public Thread videoProcessor;
     public Canvas canvas;
 
+    static MainRecord mainRecord;
+
     static final Integer BUTTON_MIN_WIDTH = 50;
 
     @Getter
     public WritableImage writableImage;
+
+    public WebcamWindow(MainRecord mainRecord) {
+        super();
+        WebcamWindow.mainRecord = mainRecord;
+    }
 
     public Scene getScene() {
         try {
@@ -73,6 +84,18 @@ public class WebcamWindow {
                         Frame frame = capture.grab();
                         Platform.runLater(() -> {
                             BufferedImage image = javaConverter.getBufferedImage(frame, 1.0, false, null);
+                            BufferedImage awtImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+                            File outFile;
+                            try {
+                                outFile = File.createTempFile("Cam_", ".jpg");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            try {
+                                ImageIO.write(image, awtImage, "100", outFile);
+                            } catch (IOException e) {
+                                System.out.println(e.getMessage());
+                            }
                             canvas.getGraphicsContext2D().drawImage(SwingFXUtils.toFXImage(image, null), 0, 0);
                         });
                     }
