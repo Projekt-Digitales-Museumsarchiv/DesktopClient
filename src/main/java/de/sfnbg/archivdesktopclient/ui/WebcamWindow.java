@@ -27,6 +27,7 @@ import java.io.IOException;
 public class WebcamWindow {
     Thread videoProcessor;
     ImageView imageView;
+    BufferedImage localImage;
 
     static final Integer BUTTON_MIN_WIDTH = 50;
 
@@ -59,14 +60,13 @@ public class WebcamWindow {
     private void bnApplyClicked() {
         if (this.videoProcessor != null) {
             this.videoProcessor.interrupt();
-            TransferRecord.setImage(imageView.getImage());
+            TransferRecord.setImage(localImage);
         }
 
-        BufferedImage awtImage = new BufferedImage((int) imageView.getImage().getWidth(), (int) imageView.getImage().getHeight(), BufferedImage.TYPE_INT_RGB);
         File outFile;
         try {
             outFile = new File(Helper.getTempFileName(TempType.CAM));
-            ImageIO.write(SwingFXUtils.fromFXImage(imageView.getImage(), awtImage), "jpg", outFile);
+            ImageIO.write(localImage, "jpg", outFile);
             TransferRecord.setFileName(outFile.getPath());
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -85,9 +85,8 @@ public class WebcamWindow {
                     while (!Thread.currentThread().isInterrupted()) {
                         Frame frame = capture.grab();
                         Platform.runLater(() -> {
-                            BufferedImage image = javaConverter.getBufferedImage(frame, 1.0, false, null);
-
-                            imageView.setImage(SwingFXUtils.toFXImage(image, null));
+                            localImage = javaConverter.getBufferedImage(frame, 1.0, false, null);
+                            imageView.setImage(SwingFXUtils.toFXImage(localImage, null));
                         });
                     }
                     capture.release();

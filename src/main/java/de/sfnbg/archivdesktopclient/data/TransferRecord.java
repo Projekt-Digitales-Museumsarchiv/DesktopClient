@@ -1,13 +1,14 @@
 package de.sfnbg.archivdesktopclient.data;
 
-import javafx.scene.image.Image;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.awt.image.BufferedImage;
 
 public class TransferRecord {
     @Getter
     @Setter
-    static Image image;
+    static BufferedImage image;
     @Getter
     @Setter
     static String fileName;

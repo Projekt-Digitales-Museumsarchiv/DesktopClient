@@ -16,10 +16,6 @@ public class Helper {
         Runtime r = Runtime.getRuntime();
         String outFile = getTempFileName(TempType.OCR);
         String tessFile = outFile.replaceAll(".txt", "");
-        System.out.println(TransferRecord.getFileName());
-        System.out.println(tessFile);
-        System.out.println(outFile);
-
         try {
             String[] params = new String[]{
                     "tesseract"
@@ -29,9 +25,6 @@ public class Helper {
             System.out.println(params[1]);
             System.out.println(params[2]);
             r.exec(params).waitFor();
-//            while (!Files.exists(Path.of(outFile))) {
-//                System.out.println("Waiting for ocr...");
-//            }
             if (Files.exists(Path.of(outFile))) {
                 TransferRecord.setFullText(Files.readString(Path.of(outFile)));
                 System.out.println(TransferRecord.getFullText());

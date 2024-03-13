@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -28,7 +27,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 
@@ -116,14 +114,8 @@ public class ImportCard extends Card {
     private void saveFile(File selectedFile) {
         String fileName = selectedFile.getName();
         String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-        System.out.println(extension);
-        System.out.println(selectedFile.getName());
-        System.out.println(selectedFile.getPath());
-        BufferedImage img = SwingFXUtils.fromFXImage(TransferRecord.getImage(), null);
-        BufferedImage awtImage = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
-
         try {
-            ImageIO.write(SwingFXUtils.fromFXImage(imageView.snapshot(null, null), awtImage), extension, selectedFile);
+            ImageIO.write(TransferRecord.getImage(), extension, selectedFile);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -135,11 +127,11 @@ public class ImportCard extends Card {
         File selectedFile = fileChooser.showOpenDialog(getScene().getWindow());
         if (selectedFile != null) {
             try {
-                Image image = new Image(new FileInputStream(selectedFile));
-                imageView.setImage(image);
+                BufferedImage image = ImageIO.read(selectedFile);
+                imageView.setImage(SwingFXUtils.toFXImage(image, null));
                 TransferRecord.setImage(image);
                 File outFile = new File(Helper.getTempFileName(TempType.IMPORT));
-                System.out.println(outFile.getPath());
+                TransferRecord.setFileName(outFile.getPath());
                 saveFile(outFile);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -159,8 +151,11 @@ public class ImportCard extends Card {
         Dragboard dragboard = event.getDragboard();
         if (dragboard.hasFiles() || dragboard.hasImage()) {
             try {
-                Image image = new Image(new FileInputStream(dragboard.getFiles().get(0)));
-                imageView.setImage(image);
+                //Image image = new Image(new FileInputStream(dragboard.getFiles().get(0)));
+                //BufferedImage image = new BufferedImage(new FileInputStream(dragboard.getFiles().get(0)));
+                File file = dragboard.getFiles().get(0);
+                BufferedImage image = ImageIO.read(file);
+                imageView.setImage(SwingFXUtils.toFXImage(image, null));
                 TransferRecord.setImage(image);
                 File outFile = new File(Helper.getTempFileName(TempType.DROP));
                 System.out.println(outFile.getPath());
@@ -181,7 +176,7 @@ public class ImportCard extends Card {
         stage.setScene(scene);
         stage.showAndWait();
         if (TransferRecord.getImage() != null) {
-            imageView.setImage(TransferRecord.getImage());
+            imageView.setImage(SwingFXUtils.toFXImage(TransferRecord.getImage(), null));
             System.out.println(TransferRecord.getFileName());
         }
     }
