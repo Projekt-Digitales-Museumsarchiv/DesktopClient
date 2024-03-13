@@ -1,17 +1,17 @@
 package de.sfnbg.archivdesktopclient.ui;
 
 import atlantafx.base.controls.Card;
-import de.sfnbg.archivdesktopclient.data.MainRecord;
+import de.sfnbg.archivdesktopclient.data.TransferRecord;
+import de.sfnbg.archivdesktopclient.util.Helper;
+import de.sfnbg.archivdesktopclient.util.TempType;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
-import javafx.scene.image.WritableImage;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import lombok.Getter;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.Java2DFrameConverter;
@@ -25,26 +25,20 @@ import java.io.File;
 import java.io.IOException;
 
 public class WebcamWindow {
-    public Thread videoProcessor;
-    public Canvas canvas;
-
-    static MainRecord mainRecord;
+    Thread videoProcessor;
+    ImageView imageView;
 
     static final Integer BUTTON_MIN_WIDTH = 50;
-
-    @Getter
-    public WritableImage writableImage;
-
-    public WebcamWindow(MainRecord mainRecord) {
-        super();
-        WebcamWindow.mainRecord = mainRecord;
-    }
 
     public Scene getScene() {
         try {
             Card card = new Card();
-            canvas = new Canvas(400, 400);
-            card.setBody(canvas);
+
+            imageView = new ImageView();
+            imageView.setFitWidth(500);
+            imageView.setFitHeight(400);
+            card.setBody(imageView);
+
             Button bnStart = new Button("Start", new FontIcon(Feather.PLAY));
             bnStart.setOnAction(e -> bnStartClicked());
             bnStart.setMinWidth(BUTTON_MIN_WIDTH);
@@ -65,11 +59,19 @@ public class WebcamWindow {
     private void bnApplyClicked() {
         if (this.videoProcessor != null) {
             this.videoProcessor.interrupt();
-            WritableImage writableImage = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
-            canvas.snapshot(null, writableImage);
-            this.writableImage = writableImage;
+            TransferRecord.setImage(imageView.getImage());
         }
-        Stage stage = (Stage) canvas.getScene().getWindow();
+
+        BufferedImage awtImage = new BufferedImage((int) imageView.getImage().getWidth(), (int) imageView.getImage().getHeight(), BufferedImage.TYPE_INT_RGB);
+        File outFile;
+        try {
+            outFile = new File(Helper.getTempFileName(TempType.CAM));
+            ImageIO.write(SwingFXUtils.fromFXImage(imageView.getImage(), awtImage), "jpg", outFile);
+            TransferRecord.setFileName(outFile.getPath());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        Stage stage = (Stage) imageView.getScene().getWindow();
         stage.close();
     }
 
@@ -84,19 +86,8 @@ public class WebcamWindow {
                         Frame frame = capture.grab();
                         Platform.runLater(() -> {
                             BufferedImage image = javaConverter.getBufferedImage(frame, 1.0, false, null);
-                            BufferedImage awtImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-                            File outFile;
-                            try {
-                                outFile = File.createTempFile("Cam_", ".jpg");
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                            try {
-                                ImageIO.write(image, awtImage, "100", outFile);
-                            } catch (IOException e) {
-                                System.out.println(e.getMessage());
-                            }
-                            canvas.getGraphicsContext2D().drawImage(SwingFXUtils.toFXImage(image, null), 0, 0);
+
+                            imageView.setImage(SwingFXUtils.toFXImage(image, null));
                         });
                     }
                     capture.release();

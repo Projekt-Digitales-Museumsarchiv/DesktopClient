@@ -1,9 +1,20 @@
 package de.sfnbg.archivdesktopclient.data;
 
-import lombok.Data;
+import javafx.scene.image.Image;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
 public class TransferRecord {
-    String fileName;
-    String fullText;
+    @Getter
+    @Setter
+    static Image image;
+    @Getter
+    @Setter
+    static String fileName;
+    @Getter
+    @Setter
+    static String fullText;
+    @Getter
+    @Setter
+    static String isbn;
 }

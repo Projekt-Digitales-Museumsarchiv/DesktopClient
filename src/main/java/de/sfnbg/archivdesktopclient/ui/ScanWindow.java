@@ -1,7 +1,9 @@
 package de.sfnbg.archivdesktopclient.ui;
 
 import atlantafx.base.controls.Card;
-import de.sfnbg.archivdesktopclient.data.MainRecord;
+import de.sfnbg.archivdesktopclient.data.TransferRecord;
+import de.sfnbg.archivdesktopclient.util.Helper;
+import de.sfnbg.archivdesktopclient.util.TempType;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -22,8 +24,6 @@ import java.io.IOException;
 
 @Getter
 public class ScanWindow {
-    static MainRecord mainRecord;
-
     static final Integer BUTTON_MIN_WIDTH = 20;
 
     private ImageView imageView;
@@ -33,11 +33,6 @@ public class ScanWindow {
     private ComboBox<String> cmbColor;
     private ComboBox<String> cmbOutput;
     private CheckBox cbAdf;
-
-    public ScanWindow(MainRecord mainRecord) {
-        super();
-        ScanWindow.mainRecord = mainRecord;
-    }
 
     public Scene getScene() {
         try {
@@ -77,6 +72,7 @@ public class ScanWindow {
             imageView.setPreserveRatio(true);
             imageView.setFitWidth(500);
             imageView.setFitHeight(400);
+
             imageView.setPickOnBounds(true);
             card.setBody(imageView);
 
@@ -97,18 +93,18 @@ public class ScanWindow {
     private void bnScanClicked() {
         try {
             Runtime r = Runtime.getRuntime();
-            File outFile = File.createTempFile("Scan_", ".jpg");
-            System.out.println(outFile.getPath());
+            File outFile = new File(Helper.getTempFileName(TempType.SCAN));
             r.exec(new String[]{"CmdTwain"
-                    , "-c"
-                    , getInit()
-                    , getOutput(cmbOutput.getValue())
-                    , outFile.getPath()}).waitFor();
+                            , "-c"
+                            , getInit()
+                            , getOutput(cmbOutput.getValue())
+                            , outFile.getPath()})
+                    .waitFor();
             System.out.println(getInit());
             if (outFile.exists()) {
                 try {
                     imageView.setImage(new Image(new FileInputStream(outFile)));
-                    mainRecord.getTransferRecord().setFileName(outFile.getPath());
+                    TransferRecord.setFileName(outFile.getPath());
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }

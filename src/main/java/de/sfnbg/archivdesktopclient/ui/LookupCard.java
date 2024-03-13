@@ -2,7 +2,6 @@ package de.sfnbg.archivdesktopclient.ui;
 
 import atlantafx.base.controls.Card;
 import atlantafx.base.theme.Styles;
-import de.sfnbg.archivdesktopclient.data.MainRecord;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
@@ -11,11 +10,8 @@ import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 public class LookupCard extends Card {
-    MainRecord mainRecord;
 
-    public LookupCard(MainRecord mainRecord) {
-        super();
-        this.mainRecord = mainRecord;
+    public LookupCard() {
         Label title = new Label("Daten suchen");
         title.getStyleClass().add((Styles.TITLE_3));
         this.setHeader(title);

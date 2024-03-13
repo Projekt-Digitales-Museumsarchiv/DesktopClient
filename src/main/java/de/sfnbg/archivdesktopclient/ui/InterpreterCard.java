@@ -2,7 +2,7 @@ package de.sfnbg.archivdesktopclient.ui;
 
 import atlantafx.base.controls.Card;
 import atlantafx.base.theme.Styles;
-import de.sfnbg.archivdesktopclient.data.MainRecord;
+import de.sfnbg.archivdesktopclient.util.Helper;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -15,11 +15,9 @@ import org.kordamp.ikonli.material2.Material2MZ;
 public class InterpreterCard extends Card {
     static final Integer BUTTON_MIN_WIDTH = 50;
 
-    MainRecord mainRecord;
+    TextArea ta;
 
-    public InterpreterCard(MainRecord mainRecord) {
-        super();
-        this.mainRecord = mainRecord;
+    public InterpreterCard() {
         var title = new Label("Bild interpretieren");
         title.getStyleClass().add((Styles.TITLE_3));
         this.setHeader(title);
@@ -28,7 +26,7 @@ public class InterpreterCard extends Card {
         subtitle.getStyleClass().add((Styles.TEXT_SMALL));
         this.setSubHeader(subtitle);
 
-        TextArea ta = new TextArea();
+        ta = new TextArea();
         ta.setWrapText(true);
         ta.setMaxWidth(400);
         this.setBody(ta);
@@ -52,5 +50,9 @@ public class InterpreterCard extends Card {
     }
 
     private void bnFulltextClicked() {
+        ta.setText(Helper.useTesseract());
+
     }
+
+
 }
