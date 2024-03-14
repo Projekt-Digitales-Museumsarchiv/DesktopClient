@@ -113,9 +113,9 @@ public class ImportCard extends Card {
 
     private void saveFile(File selectedFile) {
         String fileName = selectedFile.getName();
-        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+        //String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
         try {
-            ImageIO.write(TransferRecord.getImage(), extension, selectedFile);
+            ImageIO.write(TransferRecord.getImage(), "JPG", selectedFile);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -158,7 +158,6 @@ public class ImportCard extends Card {
                 imageView.setImage(SwingFXUtils.toFXImage(image, null));
                 TransferRecord.setImage(image);
                 File outFile = new File(Helper.getTempFileName(TempType.DROP));
-                System.out.println(outFile.getPath());
                 saveFile(outFile);
                 TransferRecord.setFileName(outFile.getPath());
 
@@ -177,7 +176,6 @@ public class ImportCard extends Card {
         stage.showAndWait();
         if (TransferRecord.getImage() != null) {
             imageView.setImage(SwingFXUtils.toFXImage(TransferRecord.getImage(), null));
-            System.out.println(TransferRecord.getFileName());
         }
     }
 }

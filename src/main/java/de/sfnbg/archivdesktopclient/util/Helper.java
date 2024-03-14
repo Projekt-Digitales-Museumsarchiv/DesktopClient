@@ -3,8 +3,10 @@ package de.sfnbg.archivdesktopclient.util;
 import de.sfnbg.archivdesktopclient.data.TransferRecord;
 import lombok.Data;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
@@ -20,18 +22,41 @@ public class Helper {
             String[] params = new String[]{
                     "tesseract"
                     , TransferRecord.getFileName()
-                    , tessFile};
-            System.out.println(params[0]);
-            System.out.println(params[1]);
-            System.out.println(params[2]);
+                    , tessFile
+                    , "-l"
+                    , "deu+eng"};
             r.exec(params).waitFor();
-            if (Files.exists(Path.of(outFile))) {
-                TransferRecord.setFullText(Files.readString(Path.of(outFile)));
-                System.out.println(TransferRecord.getFullText());
+            Path path = Path.of(outFile);
+            if (Files.exists(path)) {
+                TransferRecord.setFullText(Files.readString(path));
                 return TransferRecord.getFullText();
             } else return null;
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static String useZBar() {
+        try {
+            Runtime r = Runtime.getRuntime();
+            String[] params = new String[]{
+                    "zbarimg"
+                    , TransferRecord.getFileName()};
+
+            Process process = r.exec(params);
+            process.waitFor();
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            String s;
+            String outText = "";
+            while ((s = stdInput.readLine()) != null) {
+                outText += s.replaceAll("EAN-13:", "");
+            }
+            TransferRecord.setFullText(outText);
+            return outText;
+        } catch (IOException | InterruptedException e) {
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 
@@ -53,7 +78,6 @@ public class Helper {
         String tempDir = System.getProperty("java.io.tmpdir");
 
         File file = new File(tempDir, tempFileName);
-        System.out.println(file.getPath());
         return file.getPath();
     }
 }

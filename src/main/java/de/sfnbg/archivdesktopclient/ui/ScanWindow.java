@@ -100,7 +100,6 @@ public class ScanWindow {
                             , getOutput(cmbOutput.getValue())
                             , outFile.getPath()})
                     .waitFor();
-            System.out.println(getInit());
             if (outFile.exists()) {
                 try {
                     imageView.setImage(new Image(new FileInputStream(outFile)));

@@ -33,6 +33,7 @@ public class InterpreterCard extends Card {
 
         Button bnBarcode = new Button("Barcode", new FontIcon(Material2AL.BARCODE));
         bnBarcode.setMinWidth(BUTTON_MIN_WIDTH);
+        bnBarcode.setOnAction(e -> bnBarcodeClicked());
 
         Button bnIsbn = new Button("ISBN", new FontIcon(Material2MZ.SHORT_TEXT));
         bnIsbn.setMinWidth(BUTTON_MIN_WIDTH);
@@ -47,6 +48,10 @@ public class InterpreterCard extends Card {
         ToolBar footer = new ToolBar(bnBarcode, bnIsbn, bnFulltext, bnClipboard);
 
         this.setFooter(footer);
+    }
+
+    private void bnBarcodeClicked() {
+        ta.setText(Helper.useZBar());
     }
 
     private void bnFulltextClicked() {
