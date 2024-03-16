@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.Java2DFrameConverter;
-import org.bytedeco.javacv.OpenCVFrameGrabber;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -77,7 +76,10 @@ public class WebcamWindow {
 
     private void bnStartClicked() {
         try (Java2DFrameConverter javaConverter = new Java2DFrameConverter()) {
-            OpenCVFrameGrabber capture = OpenCVFrameGrabber.createDefault(0);
+            FrameGrabber capture = FrameGrabber.createDefault(0);
+            capture.setImageMode(FrameGrabber.ImageMode.GRAY);
+            capture.setImageHeight(1920);
+            capture.setImageWidth(1080);
             capture.start();
 
             this.videoProcessor = new Thread(() -> {
@@ -85,7 +87,7 @@ public class WebcamWindow {
                     while (!Thread.currentThread().isInterrupted()) {
                         Frame frame = capture.grab();
                         Platform.runLater(() -> {
-                            localImage = javaConverter.getBufferedImage(frame, 1.0, false, null);
+                            localImage = javaConverter.getBufferedImage(frame);
                             imageView.setImage(SwingFXUtils.toFXImage(localImage, null));
                         });
                     }
