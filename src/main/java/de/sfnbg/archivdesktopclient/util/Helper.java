@@ -3,6 +3,8 @@ package de.sfnbg.archivdesktopclient.util;
 import de.sfnbg.archivdesktopclient.data.TransferRecord;
 import lombok.Data;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +12,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
+
 
 @Data
 public class Helper {
@@ -50,7 +53,8 @@ public class Helper {
             String s;
             String outText = "";
             while ((s = stdInput.readLine()) != null) {
-                outText += s.replaceAll("EAN-13:", "");
+                if (!s.isEmpty())
+                    outText += s.replaceAll("EAN-13:", "");
             }
             TransferRecord.setFullText(outText);
             return outText;
@@ -60,6 +64,28 @@ public class Helper {
         }
     }
 
+    public static void useCommandCam(String finalFileName) {
+        String tempFileName = getTempFileName(TempType.GRAB);
+        try {
+            Runtime r = Runtime.getRuntime();
+            String[] params = new String[]{
+                    "commandcam"
+                    , "/filename"
+                    , tempFileName};
+
+            Process process = r.exec(params);
+            process.waitFor();
+            BufferedImage image = ImageIO.read(new File(tempFileName));
+            ImageIO.write(image, "JPG", new File(finalFileName));
+            TransferRecord.setFileName(finalFileName);
+            TransferRecord.setImage(image);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
     public static String getTempFileName(TempType tempType) {
         String tempFileName = "ArchDC_";
         String extension = ".jpg";
@@ -67,6 +93,10 @@ public class Helper {
             case OCR -> {
                 extension = ".txt";
                 tempFileName += "OCR_";
+            }
+            case GRAB -> {
+                extension = ".bmp";
+                tempFileName += "GRAB_";
             }
             case DROP -> tempFileName += "DROP_";
             case SCAN -> tempFileName += "SCAN_";

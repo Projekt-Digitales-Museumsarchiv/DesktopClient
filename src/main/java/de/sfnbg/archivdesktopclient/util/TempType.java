@@ -5,5 +5,6 @@ public enum TempType {
     SCAN,
     IMPORT,
     OCR,
-    CAM
+    CAM,
+    GRAB
 }

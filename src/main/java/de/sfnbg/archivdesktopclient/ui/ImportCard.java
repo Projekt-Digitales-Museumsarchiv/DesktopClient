@@ -112,8 +112,6 @@ public class ImportCard extends Card {
     }
 
     private void saveFile(File selectedFile) {
-        String fileName = selectedFile.getName();
-        //String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
         try {
             ImageIO.write(TransferRecord.getImage(), "JPG", selectedFile);
         } catch (IOException e) {
@@ -168,12 +166,14 @@ public class ImportCard extends Card {
     }
 
     private void bnWebCamClicked() {
-        WebcamWindow webcamWindow = new WebcamWindow();
-        Scene scene = webcamWindow.getScene();
-        Stage stage = new Stage();
-        stage.setTitle("Bild von Webcam holen");
-        stage.setScene(scene);
-        stage.showAndWait();
+//        WebcamWindow webcamWindow = new WebcamWindow();
+//        Scene scene = webcamWindow.getScene();
+//        Stage stage = new Stage();
+//        stage.setTitle("Bild von Webcam holen");
+//        stage.setScene(scene);
+//        stage.showAndWait();
+        Helper.useCommandCam(Helper.getTempFileName(TempType.CAM));
+//        imageView.setImage(SwingFXUtils.toFXImage(TransferRecord.getImage(), null));
         if (TransferRecord.getImage() != null) {
             imageView.setImage(SwingFXUtils.toFXImage(TransferRecord.getImage(), null));
         }
