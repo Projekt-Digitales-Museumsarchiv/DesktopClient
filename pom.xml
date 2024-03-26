@@ -17,6 +17,8 @@
         <lombok.version>1.18.26</lombok.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <unirest.version>4.3.0</unirest.version>
+        <sonar.organization>projekt-digitales-museumsarchiv</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
     <dependencyManagement>
         <dependencies>

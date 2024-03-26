@@ -10,10 +10,13 @@ name: Linux-Build
 
 on:
   push:
-    branches: [ "develop" ]
+    branches:
+      - develop
+      - main
+      - feature*
   pull_request:
-    branches: [ "develop" ]
-
+    branches:
+      - develop
 jobs:
   build-linux:
     runs-on: [ ubuntu-latest ]
@@ -36,9 +39,7 @@ jobs:
       - name: Jar erzeugen
         run: mvn -B package --file pom.xml
       - name: Run Image erzeugen
-        run: mvn -B javafx:jlink --file pom.xml
-      - name: Paket für Linux erzeugen
-        run: mvn -B jpackage:jpackage --file pom.xml
+        run: mvn -B moditect:create-runtime-image --file pom.xml
       - name: JaCoCo Code Coverage Report
         id: jacoco_reporter
         uses: PavanMudigonda/jacoco-reporter@v4.8
