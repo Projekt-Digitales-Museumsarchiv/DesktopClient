@@ -198,20 +198,18 @@
                 <version>1.0.0.Final</version>
                 <executions>
                     <execution>
-                        <id>add-module-info</id>
-                        <phase>generate-resources</phase>
+                        <id>generate-module-info</id>
+                        <phase>generate-sources</phase>
                         <goals>
-                            <goal>add-module-info</goal>
+                            <goal>generate-module-info</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/modules</outputDirectory>
-                            <overwriteExistingFiles>true</overwriteExistingFiles>
                             <modules>
                                 <module>
                                     <artifact>
                                         <groupId>com.konghq</groupId>
                                         <artifactId>unirest-java-core</artifactId>
-                                        <version>${unirest.version}</version>
+                                        <version>4.3.0</version>
                                     </artifact>
                                     <moduleInfo>
                                         <name>unirest.java.core</name>
@@ -224,7 +222,20 @@
                                     <artifact>
                                         <groupId>com.konghq</groupId>
                                         <artifactId>unirest-modules-gson</artifactId>
-                                        <version>${unirest.version}</version>
+                                        <version>4.3.0</version>
+                                    </artifact>
+                                    <moduleInfo>
+                                        <name>unirest.modules.gson</name>
+                                        <exports>
+                                            *;
+                                        </exports>
+                                    </moduleInfo>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>de.sfnbg</groupId>
+                                        <artifactId>unirest-modules-gson</artifactId>
+                                        <version>4.3.0</version>
                                     </artifact>
                                     <moduleInfo>
                                         <name>unirest.modules.gson</name>
@@ -235,8 +246,82 @@
                                 </module>
                             </modules>
                             <jdepsExtraArgs>
-                                <arg>--multi-release=17</arg>
+                                <arg>--multi-release</arg>
+                                <arg>17</arg>
                             </jdepsExtraArgs>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-module-infos</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-module-info</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/modules</outputDirectory>
+                            <modules>
+                                <module>
+                                    <artifact>
+                                        <groupId>com.konghq</groupId>
+                                        <artifactId>unirest-java-core</artifactId>
+                                        <version>4.3.0</version>
+                                    </artifact>
+                                    <moduleInfo>
+                                        <name>unirest.java.core</name>
+                                        <exports>
+                                            *;
+                                        </exports>
+                                    </moduleInfo>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>com.konghq</groupId>
+                                        <artifactId>unirest-modules-gson</artifactId>
+                                        <version>4.3.0</version>
+                                    </artifact>
+                                    <moduleInfo>
+                                        <name>unirest.modules.gson</name>
+                                        <exports>
+                                            *;
+                                        </exports>
+                                    </moduleInfo>
+                                </module>
+                            </modules>
+                            <jdepsExtraArgs>
+                                <arg>--multi-release</arg>
+                                <arg>17</arg>
+                            </jdepsExtraArgs>
+                            <overwriteExistingFiles>true</overwriteExistingFiles>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-module-info</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>add-module-info</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/modules</outputDirectory>
+                            <modules>
+                                <module>
+                                    <artifact>
+                                        <groupId>de.sfnbg</groupId>
+                                        <artifactId>archivdesktopclient</artifactId>
+                                        <version>0.0.1-SNAPSHOT</version>
+                                    </artifact>
+                                    <moduleInfo>
+                                        <name>de.sfnbg.archivdesktopclient</name>
+                                        <exports>
+                                            *;
+                                        </exports>
+                                    </moduleInfo>
+                                </module>
+                            </modules>
+                            <jdepsExtraArgs>
+                                <arg>--multi-release</arg>
+                                <arg>17</arg>
+                            </jdepsExtraArgs>
+                            <overwriteExistingFiles>true</overwriteExistingFiles>
                         </configuration>
                     </execution>
                     <execution>
@@ -250,21 +335,13 @@
                                 <path>${project.build.directory}/modules</path>
                             </modulePath>
                             <modules>
-                                <module>unirest.java.core</module>
-                                <module>unirest.modules.gson</module>
                                 <module>de.sfnbg.archivdesktopclient</module>
                             </modules>
-                            <excludedResources>
-                                <pattern>glob:/com.example/**</pattern>
-                            </excludedResources>
-                            <baseJdk>version=17,vendor=openjdk,platform=windows-x64</baseJdk>
                             <launcher>
-                                <name>helloWorld</name>
-                                <module>de.sfnbg.archivdesktopclien</module>
+                                <name>servus</name>
+                                <module>de.sfnbg.archivdesktopclient</module>
                             </launcher>
-                            <outputDirectory>
-                                ${project.build.directory}/jlink-image
-                            </outputDirectory>
+                            <outputDirectory>${project.build.directory}/jlink-image</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>

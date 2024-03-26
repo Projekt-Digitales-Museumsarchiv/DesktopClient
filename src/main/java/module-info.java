@@ -1,4 +1,4 @@
-module de.sfnbg.archivdesktopclient {
+module egal {
     requires javafx.base;
     requires javafx.controls;
     requires javafx.swing;
