@@ -16,6 +16,7 @@
         <lib.datafaker.version>2.1.0</lib.datafaker.version>
         <lombok.version>1.18.26</lombok.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+        <unirest.version>4.3.0</unirest.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -23,7 +24,7 @@
             <dependency>
                 <groupId>com.konghq</groupId>
                 <artifactId>unirest-java-bom</artifactId>
-                <version>4.3.0</version>
+                <version>${unirest.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -33,7 +34,7 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>21</version>
+            <version>22</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -55,12 +56,12 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
-            <version>21</version>
+            <version>22</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
+            <version>1.18.32</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -143,6 +144,7 @@
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
+                            <jModsPath>${project.build.directory}/modules</jModsPath>
                         </configuration>
                     </execution>
                 </executions>
@@ -190,7 +192,83 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0</version>
             </plugin>
-
+            <plugin>
+                <groupId>org.moditect</groupId>
+                <artifactId>moditect-maven-plugin</artifactId>
+                <version>1.0.0.Final</version>
+                <executions>
+                    <execution>
+                        <id>add-module-info</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-module-info</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/modules</outputDirectory>
+                            <overwriteExistingFiles>true</overwriteExistingFiles>
+                            <modules>
+                                <module>
+                                    <artifact>
+                                        <groupId>com.konghq</groupId>
+                                        <artifactId>unirest-java-core</artifactId>
+                                        <version>${unirest.version}</version>
+                                    </artifact>
+                                    <moduleInfo>
+                                        <name>unirest.java.core</name>
+                                        <exports>
+                                            *;
+                                        </exports>
+                                    </moduleInfo>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>com.konghq</groupId>
+                                        <artifactId>unirest-modules-gson</artifactId>
+                                        <version>${unirest.version}</version>
+                                    </artifact>
+                                    <moduleInfo>
+                                        <name>unirest.modules.gson</name>
+                                        <exports>
+                                            *;
+                                        </exports>
+                                    </moduleInfo>
+                                </module>
+                            </modules>
+                            <jdepsExtraArgs>
+                                <arg>--multi-release=17</arg>
+                            </jdepsExtraArgs>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>create-runtime-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>create-runtime-image</goal>
+                        </goals>
+                        <configuration>
+                            <modulePath>
+                                <path>${project.build.directory}/modules</path>
+                            </modulePath>
+                            <modules>
+                                <module>unirest.java.core</module>
+                                <module>unirest.modules.gson</module>
+                                <module>de.sfnbg.archivdesktopclient</module>
+                            </modules>
+                            <excludedResources>
+                                <pattern>glob:/com.example/**</pattern>
+                            </excludedResources>
+                            <baseJdk>version=17,vendor=openjdk,platform=windows-x64</baseJdk>
+                            <launcher>
+                                <name>helloWorld</name>
+                                <module>de.sfnbg.archivdesktopclien</module>
+                            </launcher>
+                            <outputDirectory>
+                                ${project.build.directory}/jlink-image
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <profiles>

@@ -18,4 +18,5 @@ public class TransferRecord {
     @Getter
     @Setter
     static String isbn;
+    static GoogleRecord googleRecord;
 }

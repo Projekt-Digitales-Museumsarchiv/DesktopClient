@@ -11,8 +11,15 @@ module de.sfnbg.archivdesktopclient {
     requires unirest.java.core;
     requires unirest.modules.gson;
     requires com.google.gson;
+    requires java.net.http;
 
-    uses java.awt.image.BufferedImage;
+    
+//    uses java.awt.image.BufferedImage;
+//    uses kong.unirest.core.Unirest;
+//    uses kong.unirest.core.HttpRequest;
+//    uses kong.unirest.core.HttpResponse;
+//    uses kong.unirest.core.java.JavaClient;
+//    uses java.net.http.HttpClient;
 
     exports de.sfnbg.archivdesktopclient;
     exports de.sfnbg.archivdesktopclient.ui;

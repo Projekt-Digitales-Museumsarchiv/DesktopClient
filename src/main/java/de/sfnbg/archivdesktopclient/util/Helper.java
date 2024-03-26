@@ -27,7 +27,7 @@ public class Helper {
                     , TransferRecord.getFileName()
                     , tessFile
                     , "-l"
-                    , "deu+eng"};
+                    , "deu"};
             r.exec(params).waitFor();
             Path path = Path.of(outFile);
             if (Files.exists(path)) {
@@ -57,6 +57,7 @@ public class Helper {
                     outText += s.replaceAll("EAN-13:", "");
             }
             TransferRecord.setFullText(outText);
+            TransferRecord.setIsbn(outText);
             return outText;
         } catch (IOException | InterruptedException e) {
             System.out.println(e.getMessage());
