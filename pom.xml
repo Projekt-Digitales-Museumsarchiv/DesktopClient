@@ -144,7 +144,6 @@
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
-                            <jModsPath>${project.build.directory}/modules</jModsPath>
                         </configuration>
                     </execution>
                 </executions>
@@ -198,60 +197,6 @@
                 <version>1.0.0.Final</version>
                 <executions>
                     <execution>
-                        <id>generate-module-info</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>generate-module-info</goal>
-                        </goals>
-                        <configuration>
-                            <modules>
-                                <module>
-                                    <artifact>
-                                        <groupId>com.konghq</groupId>
-                                        <artifactId>unirest-java-core</artifactId>
-                                        <version>4.3.0</version>
-                                    </artifact>
-                                    <moduleInfo>
-                                        <name>unirest.java.core</name>
-                                        <exports>
-                                            *;
-                                        </exports>
-                                    </moduleInfo>
-                                </module>
-                                <module>
-                                    <artifact>
-                                        <groupId>com.konghq</groupId>
-                                        <artifactId>unirest-modules-gson</artifactId>
-                                        <version>4.3.0</version>
-                                    </artifact>
-                                    <moduleInfo>
-                                        <name>unirest.modules.gson</name>
-                                        <exports>
-                                            *;
-                                        </exports>
-                                    </moduleInfo>
-                                </module>
-                                <module>
-                                    <artifact>
-                                        <groupId>de.sfnbg</groupId>
-                                        <artifactId>unirest-modules-gson</artifactId>
-                                        <version>4.3.0</version>
-                                    </artifact>
-                                    <moduleInfo>
-                                        <name>unirest.modules.gson</name>
-                                        <exports>
-                                            *;
-                                        </exports>
-                                    </moduleInfo>
-                                </module>
-                            </modules>
-                            <jdepsExtraArgs>
-                                <arg>--multi-release</arg>
-                                <arg>17</arg>
-                            </jdepsExtraArgs>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>add-module-infos</id>
                         <phase>generate-resources</phase>
                         <goals>
@@ -264,7 +209,7 @@
                                     <artifact>
                                         <groupId>com.konghq</groupId>
                                         <artifactId>unirest-java-core</artifactId>
-                                        <version>4.3.0</version>
+                                        <version>${unirest.version}</version>
                                     </artifact>
                                     <moduleInfo>
                                         <name>unirest.java.core</name>
@@ -277,7 +222,7 @@
                                     <artifact>
                                         <groupId>com.konghq</groupId>
                                         <artifactId>unirest-modules-gson</artifactId>
-                                        <version>4.3.0</version>
+                                        <version>${unirest.version}</version>
                                     </artifact>
                                     <moduleInfo>
                                         <name>unirest.modules.gson</name>
@@ -301,22 +246,19 @@
                             <goal>add-module-info</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/modules</outputDirectory>
-                            <modules>
-                                <module>
-                                    <artifact>
-                                        <groupId>de.sfnbg</groupId>
-                                        <artifactId>archivdesktopclient</artifactId>
-                                        <version>0.0.1-SNAPSHOT</version>
-                                    </artifact>
-                                    <moduleInfo>
-                                        <name>de.sfnbg.archivdesktopclient</name>
-                                        <exports>
-                                            *;
-                                        </exports>
-                                    </moduleInfo>
-                                </module>
-                            </modules>
+                            <jvmVersion>17</jvmVersion>
+                            <failOnWarning>false</failOnWarning>
+                            <module>
+                                <moduleInfo>
+                                    <name>de.sfnbg.archivdesktopclient</name>
+                                    <exports>
+                                        *;
+                                    </exports>
+                                </moduleInfo>
+                                <mainClass>
+                                    de.sfnbg.archivdesktopclient.DesktopApplication
+                                </mainClass>
+                            </module>
                             <jdepsExtraArgs>
                                 <arg>--multi-release</arg>
                                 <arg>17</arg>
@@ -337,11 +279,35 @@
                             <modules>
                                 <module>de.sfnbg.archivdesktopclient</module>
                             </modules>
+                            <outputDirectory>
+                                ${project.build.directory}/jlink-image
+                            </outputDirectory>
+                            <jarInclusionPolicy>APP_WITH_DEPENDENCIES</jarInclusionPolicy>
                             <launcher>
-                                <name>servus</name>
+                                <name>Ahjoo</name>
                                 <module>de.sfnbg.archivdesktopclient</module>
+                                <mainClass>
+                                    de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
+                                </mainClass>
                             </launcher>
-                            <outputDirectory>${project.build.directory}/jlink-image</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/modules</outputDirectory>
+                            <includeScope>runtime</includeScope>
                         </configuration>
                     </execution>
                 </executions>
@@ -366,9 +332,9 @@
                             <configuration>
                                 <name>ArchivDesktopClient</name>
                                 <type>MSI</type>
-                                <runtimeimage>${project.build.directory}/ArchivDesktopClient</runtimeimage>
+                                <runtimeimage>${project.build.directory}/jlink-image</runtimeimage>
                                 <appversion>0.0.1</appversion>
-                                <copyright>2023 Freunde der Nürnberg-Fürther Straßenbahn e.V.</copyright>
+                                <copyright>2024 Freunde der Nürnberg-Fürther Straßenbahn e.V.</copyright>
                                 <description>Desktop Client für Archivsystem</description>
                                 <vendor>Hemmeter</vendor>
                                 <winmenu>true</winmenu>
@@ -403,9 +369,9 @@
                             <version>0.1.5</version>
                             <configuration>
                                 <name>ArchivDesktopClient</name>
-                                <runtimeimage>${project.build.directory}/ArchivDesktopClient</runtimeimage>
+                                <runtimeimage>${project.build.directory}/jlink-image</runtimeimage>
                                 <appversion>0.0.1</appversion>
-                                <copyright>2023 Freunde der Nürnberg-Fürther Straßenbahn e.V.</copyright>
+                                <copyright>2024 Freunde der Nürnberg-Fürther Straßenbahn e.V.</copyright>
                                 <description>Desktop Client für Archivsystem</description>
                                 <vendor>Hemmeter</vendor>
                                 <module>
