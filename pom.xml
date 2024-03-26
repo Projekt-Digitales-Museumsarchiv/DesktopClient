@@ -144,7 +144,6 @@
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
-                            <jmodsPath>${project.build.directory}/modules</jmodsPath>
                         </configuration>
                     </execution>
                 </executions>
@@ -333,9 +332,9 @@
                             <configuration>
                                 <name>ArchivDesktopClient</name>
                                 <type>MSI</type>
-                                <runtimeimage>${project.build.directory}/ArchivDesktopClient</runtimeimage>
+                                <runtimeimage>${project.build.directory}/jlink-image</runtimeimage>
                                 <appversion>0.0.1</appversion>
-                                <copyright>2023 Freunde der Nürnberg-Fürther Straßenbahn e.V.</copyright>
+                                <copyright>2024 Freunde der Nürnberg-Fürther Straßenbahn e.V.</copyright>
                                 <description>Desktop Client für Archivsystem</description>
                                 <vendor>Hemmeter</vendor>
                                 <winmenu>true</winmenu>
@@ -370,9 +369,9 @@
                             <version>0.1.5</version>
                             <configuration>
                                 <name>ArchivDesktopClient</name>
-                                <runtimeimage>${project.build.directory}/ArchivDesktopClient</runtimeimage>
+                                <runtimeimage>${project.build.directory}/jlink-image</runtimeimage>
                                 <appversion>0.0.1</appversion>
-                                <copyright>2023 Freunde der Nürnberg-Fürther Straßenbahn e.V.</copyright>
+                                <copyright>2024 Freunde der Nürnberg-Fürther Straßenbahn e.V.</copyright>
                                 <description>Desktop Client für Archivsystem</description>
                                 <vendor>Hemmeter</vendor>
                                 <module>
