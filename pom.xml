@@ -6,30 +6,38 @@
 
     <groupId>de.sfnbg</groupId>
     <artifactId>archivdesktopclient</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>ArchivDesktopClient</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>5.9.2</junit.version>
+        <junit.version>5.10.1</junit.version>
         <lib.ikonli.version>12.3.1</lib.ikonli.version>
         <lib.datafaker.version>2.1.0</lib.datafaker.version>
         <lombok.version>1.18.26</lombok.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+        <unirest.version>4.3.0</unirest.version>
+        <sonar.organization>projekt-digitales-museumsarchiv</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
-
+    <dependencyManagement>
+        <dependencies>
+            <!-- https://mvnrepository.com/artifact/com.konghq/unirest-java-bom -->
+            <dependency>
+                <groupId>com.konghq</groupId>
+                <artifactId>unirest-java-bom</artifactId>
+                <version>${unirest.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>17.0.6</version>
+            <version>22</version>
         </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>17.0.6</version>
-        </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -42,62 +50,21 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.openpnp</groupId>-->
-        <!--            <artifactId>opencv</artifactId>-->
-        <!--            <version>4.5.1-2</version>-->
-        <!--        </dependency>-->
-        <dependency>
-            <groupId>org.bytedeco</groupId>
-            <artifactId>javacv</artifactId>
-            <version>1.5.9</version>
-        </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-swing</artifactId>
-            <version>17.0.2</version>
+            <version>21</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
-            <version>17.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bytedeco</groupId>
-            <artifactId>javacv-platform</artifactId>
-            <version>1.5.9</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bytedeco</groupId>
-            <artifactId>flandmark-platform</artifactId>
-            <version>1.07-1.5.8</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bytedeco</groupId>
-            <artifactId>opencv-platform-gpu</artifactId>
-            <version>4.7.0-1.5.9</version>
-        </dependency>
-        <!-- Optional GPL builds with (almost) everything enabled -->
-        <dependency>
-            <groupId>org.bytedeco</groupId>
-            <artifactId>ffmpeg-platform-gpl</artifactId>
-            <version>6.0-1.5.9</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bytedeco.javacpp-presets</groupId>
-            <artifactId>opencv</artifactId>
-            <version>4.0.1-1.4.4</version>
+            <version>22</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
+            <version>1.18.32</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.bytedeco</groupId>
-            <artifactId>javacpp</artifactId>
-            <version>1.5.9</version>
         </dependency>
         <dependency>
             <groupId>io.github.mkpaz</groupId>
@@ -124,7 +91,14 @@
             <artifactId>datafaker</artifactId>
             <version>${lib.datafaker.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.konghq</groupId>
+            <artifactId>unirest-java-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.konghq</groupId>
+            <artifactId>unirest-modules-gson</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -219,7 +193,127 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0</version>
             </plugin>
-
+            <plugin>
+                <groupId>org.moditect</groupId>
+                <artifactId>moditect-maven-plugin</artifactId>
+                <version>1.0.0.Final</version>
+                <executions>
+                    <execution>
+                        <id>add-module-infos</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-module-info</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/modules</outputDirectory>
+                            <modules>
+                                <module>
+                                    <artifact>
+                                        <groupId>com.konghq</groupId>
+                                        <artifactId>unirest-java-core</artifactId>
+                                        <version>${unirest.version}</version>
+                                    </artifact>
+                                    <moduleInfo>
+                                        <name>unirest.java.core</name>
+                                        <exports>
+                                            *;
+                                        </exports>
+                                    </moduleInfo>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>com.konghq</groupId>
+                                        <artifactId>unirest-modules-gson</artifactId>
+                                        <version>${unirest.version}</version>
+                                    </artifact>
+                                    <moduleInfo>
+                                        <name>unirest.modules.gson</name>
+                                        <exports>
+                                            *;
+                                        </exports>
+                                    </moduleInfo>
+                                </module>
+                            </modules>
+                            <jdepsExtraArgs>
+                                <arg>--multi-release</arg>
+                                <arg>17</arg>
+                            </jdepsExtraArgs>
+                            <overwriteExistingFiles>true</overwriteExistingFiles>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-module-info</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>add-module-info</goal>
+                        </goals>
+                        <configuration>
+                            <jvmVersion>17</jvmVersion>
+                            <failOnWarning>false</failOnWarning>
+                            <module>
+                                <moduleInfo>
+                                    <name>de.sfnbg.archivdesktopclient</name>
+                                    <exports>
+                                        *;
+                                    </exports>
+                                </moduleInfo>
+                                <mainClass>
+                                    de.sfnbg.archivdesktopclient.DesktopApplication
+                                </mainClass>
+                            </module>
+                            <jdepsExtraArgs>
+                                <arg>--multi-release</arg>
+                                <arg>17</arg>
+                            </jdepsExtraArgs>
+                            <overwriteExistingFiles>true</overwriteExistingFiles>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>create-runtime-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>create-runtime-image</goal>
+                        </goals>
+                        <configuration>
+                            <modulePath>
+                                <path>${project.build.directory}/modules</path>
+                            </modulePath>
+                            <modules>
+                                <module>de.sfnbg.archivdesktopclient</module>
+                            </modules>
+                            <outputDirectory>
+                                ${project.build.directory}/jlink-image
+                            </outputDirectory>
+                            <jarInclusionPolicy>APP_WITH_DEPENDENCIES</jarInclusionPolicy>
+                            <launcher>
+                                <name>Ahjoo</name>
+                                <module>de.sfnbg.archivdesktopclient</module>
+                                <mainClass>
+                                    de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
+                                </mainClass>
+                            </launcher>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/modules</outputDirectory>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <profiles>
@@ -240,9 +334,9 @@
                             <configuration>
                                 <name>ArchivDesktopClient</name>
                                 <type>MSI</type>
-                                <runtimeimage>${project.build.directory}/ArchivDesktopClient</runtimeimage>
+                                <runtimeimage>${project.build.directory}/jlink-image</runtimeimage>
                                 <appversion>0.0.1</appversion>
-                                <copyright>2023 Freunde der Nürnberg-Fürther Straßenbahn e.V.</copyright>
+                                <copyright>2024 Freunde der Nürnberg-Fürther Straßenbahn e.V.</copyright>
                                 <description>Desktop Client für Archivsystem</description>
                                 <vendor>Hemmeter</vendor>
                                 <winmenu>true</winmenu>
@@ -261,40 +355,5 @@
                 </pluginManagement>
             </build>
         </profile>
-        <profile>
-            <id>unix</id>
-            <activation>
-                <os>
-                    <family>Unix</family>
-                </os>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>com.github.akman</groupId>
-                            <artifactId>jpackage-maven-plugin</artifactId>
-                            <version>0.1.5</version>
-                            <configuration>
-                                <name>ArchivDesktopClient</name>
-                                <runtimeimage>${project.build.directory}/ArchivDesktopClient</runtimeimage>
-                                <appversion>0.0.1</appversion>
-                                <copyright>2023 Freunde der Nürnberg-Fürther Straßenbahn e.V.</copyright>
-                                <description>Desktop Client für Archivsystem</description>
-                                <vendor>Hemmeter</vendor>
-                                <module>
-                                    de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
-                                </module>
-                                <mainclass>
-                                    de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
-                                </mainclass>
-                            </configuration>
-
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-            </build>
-        </profile>
     </profiles>
-
 </project>
