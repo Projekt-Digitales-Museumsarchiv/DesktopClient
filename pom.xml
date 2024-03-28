@@ -350,10 +350,10 @@
                                 <description>Desktop Client für Archivsystem</description>
                                 <vendor>Hemmeter</vendor>
                                 <module>
-                                    de.sfnbg.archivdesktopclient
+                                    de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
                                 </module>
                                 <mainclass>
-                                    de.sfnbg.archivdesktopclient.DesktopApplication
+                                    de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
                                 </mainclass>
                                 <verbose>true</verbose>
                                 <linuxmenugroup>Museum</linuxmenugroup>
