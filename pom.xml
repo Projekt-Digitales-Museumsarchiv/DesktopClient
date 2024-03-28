@@ -384,6 +384,9 @@
                                 <mainclass>
                                     de.sfnbg.archivdesktopclient.DesktopApplication
                                 </mainclass>
+                                <verbose>true</verbose>
+                                <linuxmenugroup>Museum</linuxmenugroup>
+                                <linuxshortcut>true</linuxshortcut>
                             </configuration>
                         </plugin>
                     </plugins>
