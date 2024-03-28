@@ -19,7 +19,7 @@ on:
       - develop
 jobs:
   build-linux:
-    runs-on: [ self-hosted, Linus ]
+    runs-on: [ self-hosted, Linux ]
     permissions:
       contents: write
       checks: write
