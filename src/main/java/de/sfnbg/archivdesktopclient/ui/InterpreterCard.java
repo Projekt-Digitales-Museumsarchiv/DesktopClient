@@ -18,11 +18,11 @@ public class InterpreterCard extends Card {
     TextArea ta;
 
     public InterpreterCard() {
-        var title = new Label("Bild interpretieren");
-        title.getStyleClass().add((Styles.TITLE_3));
+        Label title = new Label("Bild interpretieren");
+        title.getStyleClass().add(Styles.TITLE_3);
         this.setHeader(title);
 
-        var subtitle = new Label("Barcode, ISBN im Text oder Volltext");
+        Label subtitle = new Label("Barcode, ISBN im Text oder Volltext");
         subtitle.getStyleClass().add((Styles.TEXT_SMALL));
         this.setSubHeader(subtitle);
 

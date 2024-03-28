@@ -19,6 +19,7 @@
         <unirest.version>4.3.0</unirest.version>
         <sonar.organization>projekt-digitales-museumsarchiv</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <package.version>0.0.2</package.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -138,7 +139,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
+                            <mainClass>de.sfnbg.archivdesktopclient.DesktopApplication
                             </mainClass>
                             <launcher>ArchivDesktopClient</launcher>
                             <jlinkZipName>ArchivDesktopClient</jlinkZipName>
@@ -335,7 +336,7 @@
                                 <name>ArchivDesktopClient</name>
                                 <type>MSI</type>
                                 <runtimeimage>${project.build.directory}/jlink-image</runtimeimage>
-                                <appversion>0.0.1</appversion>
+                                <appversion>${package.version}</appversion>
                                 <copyright>2024 Freunde der Nürnberg-Fürther Straßenbahn e.V.</copyright>
                                 <description>Desktop Client für Archivsystem</description>
                                 <vendor>Hemmeter</vendor>
@@ -346,8 +347,9 @@
                                     de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
                                 </module>
                                 <mainclass>
-                                    de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
+                                    de.sfnbg.archivdesktopclient.DesktopApplication
                                 </mainclass>
+                                <winupgradeuuid>cbddf5e3-7d67-4d62-b54f-162b2b27ff68</winupgradeuuid>
                             </configuration>
 
                         </plugin>
