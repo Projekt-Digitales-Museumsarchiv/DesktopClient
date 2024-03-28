@@ -357,5 +357,39 @@
                 </pluginManagement>
             </build>
         </profile>
+        <profile>
+            <id>unix</id>
+            <activation>
+                <os>
+                    <family>Unix</family>
+                </os>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.github.akman</groupId>
+                            <artifactId>jpackage-maven-plugin</artifactId>
+                            <version>0.1.5</version>
+                            <configuration>
+                                <name>ArchivDesktopClient</name>
+                                <runtimeimage>${project.build.directory}/jlink-image</runtimeimage>
+                                <appversion>${package.version}</appversion>
+                                <copyright>2023 Freunde der Nürnberg-Fürther Straßenbahn e.V.</copyright>
+                                <description>Desktop Client für Archivsystem</description>
+                                <vendor>Hemmeter</vendor>
+                                <module>
+                                    de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
+                                </module>
+                                <mainclass>
+                                    de.sfnbg.archivdesktopclient.DesktopApplication
+                                </mainclass>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+
     </profiles>
 </project>

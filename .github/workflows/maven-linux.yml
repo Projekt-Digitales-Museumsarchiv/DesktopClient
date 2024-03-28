@@ -36,10 +36,8 @@ jobs:
         uses: stCarolas/setup-maven@v4.5
         with:
           maven-version: 3.8.6
-      - name: Jar erzeugen
-        run: mvn -B package --file pom.xml
-      - name: Run Image erzeugen
-        run: mvn -B moditect:create-runtime-image --file pom.xml
+      - name: Jar, image und package erzeugen
+        run: mvn -B install --file pom.xml
       - name: JaCoCo Code Coverage Report
         id: jacoco_reporter
         uses: PavanMudigonda/jacoco-reporter@v4.8
