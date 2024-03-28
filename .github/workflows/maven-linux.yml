@@ -33,13 +33,13 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Set up Maven
-        uses: stCarolas/setup-maven@v4.5
+        uses: stCarolas/setup-maven@v5
         with:
           maven-version: 3.8.6
       - name: Jar, image und package erzeugen
         run: mvn -B install --file pom.xml
       - name: Publish setup artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4.3.1
         with:
           name: setup
           path: ${{ github.workspace }}/target/jpackage/*.deb
