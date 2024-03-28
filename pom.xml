@@ -6,7 +6,7 @@
 
     <groupId>de.sfnbg</groupId>
     <artifactId>archivdesktopclient</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <name>ArchivDesktopClient</name>
 
     <properties>
@@ -165,36 +165,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.7</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludes>
-                        <exclude>**/generated-sources/*</exclude>
-                    </excludes>
-                </configuration>
-
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0</version>
-            </plugin>
-            <plugin>
                 <groupId>org.moditect</groupId>
                 <artifactId>moditect-maven-plugin</artifactId>
                 <version>1.0.0.Final</version>
@@ -350,6 +320,7 @@
                                     de.sfnbg.archivdesktopclient.DesktopApplication
                                 </mainclass>
                                 <winupgradeuuid>cbddf5e3-7d67-4d62-b54f-162b2b27ff68</winupgradeuuid>
+                                <verbose>true</verbose>
                             </configuration>
 
                         </plugin>
@@ -379,7 +350,7 @@
                                 <description>Desktop Client für Archivsystem</description>
                                 <vendor>Hemmeter</vendor>
                                 <module>
-                                    de.sfnbg.archivdesktopclient/de.sfnbg.archivdesktopclient.DesktopApplication
+                                    de.sfnbg.archivdesktopclient
                                 </module>
                                 <mainclass>
                                     de.sfnbg.archivdesktopclient.DesktopApplication
